@@ -22,7 +22,6 @@ const initialState = {
 
 export default function Signup() {
   const [state, formAction] = useFormState(signup, initialState)
-  console.log("state: ", state)
 
   return (
     <div key="1" className="flex flex-col min-h-screen bg-[#e0f0e9]">

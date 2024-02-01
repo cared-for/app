@@ -7,6 +7,11 @@ import { redirect } from 'next/navigation'
 import { createClient } from '~/lib/supabase/actions'
 
 import { db } from '~/server/db'
+import { users } from '~/server/db/schema'
+
+const createUser = async (email: string) => {
+    return db.insert(users).values({ email })
+}
 
 export async function signup(prevData: any, formData: FormData) {
   const cookieStore = cookies()
@@ -24,9 +29,10 @@ export async function signup(prevData: any, formData: FormData) {
   if (error) {
     return { status: "ERROR", error: error.message }
   }
+  
+  // TODO: handle user creation error
+  await createUser(data.email)
 
   revalidatePath('/', 'layout')
   redirect('/')
-
-  return { status: "SUCCESS" }
 }

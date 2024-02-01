@@ -11,6 +11,7 @@ import {
   time,
   integer,
   text,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 
 /**
@@ -22,17 +23,19 @@ import {
 export const createTable = pgTableCreator((name) => `caredFor_${name}`);
 
 export const users = createTable('users', {
-  id: serial('id').primaryKey().notNull(),
-  fullName: text('full_name').notNull(),
-  phone: varchar('phone', { length: 256 }).notNull(),
+  id: serial('id').primaryKey(),
+  fullName: text('full_name'),
+  phone: varchar('phone', { length: 256 }),
   email: varchar('email', { length: 256 }).notNull(),
-  checkedIn: boolean('checked_in').default(false).notNull(),
+  checkedIn: boolean('checked_in').default(false),
   checkInTime: time('check_in_time', { withTimezone: false }),
-  attemptCount: integer('attempt_count').default(0).notNull(),
-  onFreeTrial: boolean('on_free_trial').default(true).notNull(),
+  attemptCount: integer('attempt_count').default(0),
+  onFreeTrial: boolean('on_free_trial').default(true),
   freeTrialStart: timestamp('free_trial_start', { withTimezone: false }),
-  completedUserOnboarding: boolean('completed_user_onboarding').default(false).notNull(),
-})
+  completedUserOnboarding: boolean('completed_user_onboarding').default(false),
+}, (users) => ({
+  emailIndex: uniqueIndex('email_idx').on(users.email)
+}))
 
 export const usersRelations = relations(users, ({ many }) => ({
   dependents: many(dependents),
