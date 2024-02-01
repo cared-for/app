@@ -6,12 +6,14 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { cookies } from "next/headers";
 
 import { db } from "~/server/db";
 import { client as twilio } from "~/server/twilio";
+import { createClient } from "~/lib/supabase/server";
 
 /**
  * 1. CONTEXT
@@ -26,9 +28,15 @@ import { client as twilio } from "~/server/twilio";
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
+  const supabase = createClient(cookies());
+  
+  const { data } = await supabase.auth.getUser();
+
   return {
     db,
     twilio,
+    supabase,
+    user: data.user,
     ...opts,
   };
 };
@@ -76,3 +84,15 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+export const protectedProcedure = publicProcedure.use(async (opts) => {
+  const { ctx } = opts;
+  if (!ctx.user) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
+  }
+
+  return opts.next({
+    ctx: {
+      user: ctx.user,
+    },
+  });
+});
