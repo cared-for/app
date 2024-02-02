@@ -5,22 +5,15 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1706698184060,
-      "tag": "0000_white_goblin_queen",
+      "when": 1706786056232,
+      "tag": "0000_tough_vermin",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "5",
-      "when": 1706781975191,
-      "tag": "0001_certain_skreet",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1706782585857,
-      "tag": "0002_cynical_vindicator",
+      "when": 1706870146094,
+      "tag": "0001_aspiring_blacklash",
       "breakpoints": true
     }
   ]

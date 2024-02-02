@@ -1,6 +1,6 @@
 {
-  "id": "f46dd36a-ded5-4db0-8532-8f8ac97617a4",
-  "prevId": "8eca25e8-6274-437c-9d44-7f9a42713ebb",
+  "id": "7a03087d-0c88-4908-aa4c-c9d8e022c16c",
+  "prevId": "f77aefa6-7e5c-428e-9290-5a0217371eb1",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -79,9 +79,9 @@
           "notNull": false,
           "default": false
         },
-        "check_in_time": {
-          "name": "check_in_time",
-          "type": "time",
+        "schedule_id": {
+          "name": "schedule_id",
+          "type": "varchar(256)",
           "primaryKey": false,
           "notNull": false
         },
@@ -113,7 +113,15 @@
           "default": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "email_idx": {
+          "name": "email_idx",
+          "columns": [
+            "email"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}

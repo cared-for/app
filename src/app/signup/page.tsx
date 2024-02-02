@@ -16,8 +16,8 @@ import { Input } from "~/components/ui/input"
 import { Button } from "~/components/ui/button"
 
 const initialState = {
-  status: "",
-  message: "",
+  email: "",
+  password: "",
 }
 
 export default function Signup() {

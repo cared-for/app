@@ -8,13 +8,15 @@ CREATE TABLE IF NOT EXISTS "caredFor_dependents" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "caredFor_users" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"full_name" text NOT NULL,
-	"phone" varchar(256) NOT NULL,
+	"full_name" text,
+	"phone" varchar(256),
 	"email" varchar(256) NOT NULL,
-	"checked_in" boolean DEFAULT false NOT NULL,
+	"checked_in" boolean DEFAULT false,
 	"check_in_time" time,
-	"attempt_count" integer DEFAULT 0 NOT NULL,
-	"on_free_trial" boolean DEFAULT true NOT NULL,
+	"attempt_count" integer DEFAULT 0,
+	"on_free_trial" boolean DEFAULT true,
 	"free_trial_start" timestamp,
-	"completed_user_onboarding" boolean DEFAULT false NOT NULL
+	"completed_user_onboarding" boolean DEFAULT false
 );
+--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "email_idx" ON "caredFor_users" ("email");

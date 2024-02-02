@@ -13,6 +13,8 @@ import {
   text,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
+import { type InferSelectModel, type InferInsertModel } from 'drizzle-orm'
+
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -28,7 +30,7 @@ export const users = createTable('users', {
   phone: varchar('phone', { length: 256 }),
   email: varchar('email', { length: 256 }).notNull(),
   checkedIn: boolean('checked_in').default(false),
-  checkInTime: time('check_in_time', { withTimezone: false }),
+  scheduleId: varchar('schedule_id', { length: 256 }),
   attemptCount: integer('attempt_count').default(0),
   onFreeTrial: boolean('on_free_trial').default(true),
   freeTrialStart: timestamp('free_trial_start', { withTimezone: false }),
@@ -40,6 +42,9 @@ export const users = createTable('users', {
 export const usersRelations = relations(users, ({ many }) => ({
   dependents: many(dependents),
 }));
+
+export type SelectUser = InferSelectModel<typeof users>;
+export type InsertUser = InferInsertModel<typeof users>;
 
 export const dependents = createTable('dependents', {
   id: serial('id').primaryKey().notNull(),
@@ -55,4 +60,3 @@ export const dependentRelations = relations(dependents, ({ one }) => ({
     references: [users.id],
   })
 }));
-

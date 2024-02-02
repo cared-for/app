@@ -13,7 +13,9 @@ import { cookies } from "next/headers";
 
 import { db } from "~/server/db";
 import { client as twilio } from "~/server/twilio";
+import { Client } from "@upstash/qstash"
 import { createClient } from "~/lib/supabase/server";
+import { env } from "~/env";
 
 /**
  * 1. CONTEXT
@@ -29,6 +31,7 @@ import { createClient } from "~/lib/supabase/server";
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const supabase = createClient(cookies());
+  const qStash = new Client({ token: env.UPSTASH_TOKEN })
   
   const { data } = await supabase.auth.getUser();
 
@@ -36,6 +39,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
     db,
     twilio,
     supabase,
+    qStash,
     user: data.user,
     ...opts,
   };
