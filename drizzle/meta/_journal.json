@@ -15,6 +15,20 @@
       "when": 1706870146094,
       "tag": "0001_aspiring_blacklash",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1707017646185,
+      "tag": "0002_silent_triton",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1707017686648,
+      "tag": "0003_zippy_omega_sentinel",
+      "breakpoints": true
     }
   ]
 }

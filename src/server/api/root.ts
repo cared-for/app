@@ -1,4 +1,5 @@
 import { userRouter } from "~/server/api/routers/user";
+import { dependentRouter } from "~/server/api/routers/dependent";
 import { checkInRouter } from "~/server/api/routers/checkIn";
 import { createTRPCRouter } from "~/server/api/trpc";
 
@@ -9,6 +10,7 @@ import { createTRPCRouter } from "~/server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
   user: userRouter,
+  dependent: dependentRouter,
   checkIn: checkInRouter,
 });
 

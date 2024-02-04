@@ -7,6 +7,7 @@ import { api } from '~/trpc/server'
 
 import { StepOne } from "./stepOne"
 import { StepTwo } from "./stepTwo"
+import { StepThree } from "./stepThree"
 
 export default async function Onboard() {
   const cookieStore = cookies()
@@ -21,5 +22,5 @@ export default async function Onboard() {
 
   console.log("user: ", user);
 
-  return <StepTwo {...user} />
+  return <StepThree {...user} />
 }

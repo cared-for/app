@@ -50,8 +50,8 @@ export const dependents = createTable('dependents', {
   id: serial('id').primaryKey().notNull(),
   fullName: text('full_name').notNull(),
   phone: varchar('phone', { length: 256 }).notNull(),
-  email: varchar('email', { length: 256 }).notNull(),
-  userId: integer('user_id'),
+  email: varchar('email', { length: 256 }),
+  userId: integer('user_id').references(() => users.id),
 });
 
 export const dependentRelations = relations(dependents, ({ one }) => ({
