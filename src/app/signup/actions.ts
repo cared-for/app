@@ -13,7 +13,7 @@ const createUser = async (email: string) => {
     return db.insert(users).values({ email })
 }
 
-export async function signup(prevData: any, formData: FormData) {
+export async function signup(_: any, formData: FormData) {
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
 
@@ -33,6 +33,6 @@ export async function signup(prevData: any, formData: FormData) {
   // TODO: handle user creation error
   await createUser(data.email)
 
-  revalidatePath('/', 'layout')
-  redirect('/')
+  revalidatePath('/onboard', 'layout')
+  redirect('/onboard')
 }

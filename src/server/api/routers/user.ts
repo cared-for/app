@@ -34,15 +34,22 @@ export const userRouter = createTRPCRouter({
       fullName: z.string().optional(),
       phone: z.string().optional(),
       checkInTime: z.string().optional(),
+      completedUserOnboarding: z.boolean().optional(),
     }))
     .mutation(async ({ ctx, input }) => {
       const { id, ...params }  = input;
-      await ctx.db.update(users).set(params).where(
-        eq(
-          users.id,
-          id,
+      const [user] = await ctx.db 
+        .update(users)
+        .set(params)
+        .where(
+          eq(
+            users.id,
+            id,
+          )
         )
-      );
+        .returning()
+
+      return user;
     }),
 });
 

@@ -5,66 +5,32 @@
  * @see https://v0.dev/t/tXmzhc69LEs
  */
 
-import { useState, useTransition } from "react"
-import { useRouter } from "next/navigation"
-import { api } from "~/trpc/react"
+import { useState } from "react"
+import { useFormState } from "react-dom"
 
 // components
 import { Input } from "~/components/ui/input"
 import { Button } from "~/components/ui/button"
 import type { SelectUser } from "~/server/db/schema"
+import { SubmitButton } from "~/components/ui/submitButton"
+import { stepThreeSubmit } from "./actions"
 
 const initialMemberState = [crypto.randomUUID()]
-
+const initialState = {
+  status: "",
+  message: "",
+}
 export function StepThree({ email, id }: SelectUser) {
-  const router = useRouter()
-  const [status, setStatus] = useState<"IDLE" | "LOADING" | "SUCCESS" | "ERROR">("IDLE")
-  const [isPending, setTransition] = useTransition();
+  const [state, formAction] = useFormState(stepThreeSubmit, initialState)
   const [members, setMembers] = useState<string[]>(initialMemberState)
-
-  const updateDependents = api.dependent.createMany.useMutation()
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    try {
-      e.preventDefault()
-
-      setStatus("LOADING");
-
-      const form = e.target as HTMLFormElement
-      const formData = new FormData(form)
-      
-      const dependents = [...Array(members.length).keys()].map((i) => {
-        const fullName = formData.get(`fullName-${i}`) as string
-        const phone = formData.get(`phone-${i}`) as string
-
-        return { fullName, phone }
-      })
-
-      console.log("dependents: ", dependents)
-
-      const results = await updateDependents.mutateAsync({
-        userEmail: email,
-        dependents,
-      })
-
-      console.log("results: ", results);
-
-      setStatus("SUCCESS")
-
-      setTimeout(() => setTransition(() => {
-        router.refresh()
-      }), 500)
-    } catch(error) {
-      setStatus("ERROR")
-    }
-  }
 
   return (
     <div className="flex flex-col min-h-screen bg-[#e0f0e9] items-center justify-center p-4 lg:p-32">
       <h1 className="absolute top-4 left-6 text-4xl font-bold text-[#006a4e]">CaredFor</h1>
       
-      <form className="max-w-4xl w-full grid grid-cols-2 gap-8" onSubmit={handleSubmit} >
+      <form className="max-w-4xl w-full grid grid-cols-2 gap-8" action={formAction} >
         <input name="id" type="hidden" value={id} />
+        <input name="length" type="hidden" value={members.length} />
 
         <div className="flex flex-col min-h-[400px] space-y-6 justify-between">
           <div className="gap-y-2">
@@ -142,14 +108,15 @@ export function StepThree({ email, id }: SelectUser) {
               </div>
             ))}
 
-            <Button
+            <SubmitButton
               size="lg"
-              className={`${status === "ERROR" ? "bg-red-500" : "bg-[#006a4e]"} text-md text-white hover:bg-[#00563f]`}
-              type="submit"
-              disabled={"LOADING" === status}
+              className="bg-[#006a4e] text-md text-white hover:bg-[#00563f]"
             >
-              {status === "SUCCESS" ? "Success!" : "Continue"}
-            </Button>
+              Finish
+            </SubmitButton>
+            {state.status === "ERROR" && (
+              <p className="text-red-500 text-center">{state.message}</p>
+            )}
           </div>
         </div>
 
