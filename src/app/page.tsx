@@ -7,7 +7,7 @@ import { MessageCircleHeart, UserCheck, Bell } from "lucide-react"
  * @see https://v0.dev/t/k5fM3CLyo33
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-export default function Component() {
+export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-[#e0f0e9]">
       <header className="flex items-center justify-between px-6 py-4">

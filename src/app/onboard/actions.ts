@@ -24,7 +24,7 @@ export const stepOneSubmit = async (_: any, formData: FormData) => {
 export const stepThreeSubmit = async (_: any, formData: FormData) => {
   try {
     const data = {
-      id: Number(formData.get('id')),
+      userId: Number(formData.get('userId')),
       length: Number(formData.get('length')),
     }
     
@@ -35,9 +35,9 @@ export const stepThreeSubmit = async (_: any, formData: FormData) => {
       return { fullName, phone }
     })
 
-    const user = await api.user.update.mutate({ id: data.id, completedUserOnboarding: true })
+    await api.user.update.mutate({ id: data.userId, completedUserOnboarding: true })
     await api.dependent.createMany.mutate({
-      userEmail: user!.email,
+      userId: data.userId,
       dependents,
     })
 

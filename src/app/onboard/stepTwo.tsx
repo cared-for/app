@@ -74,6 +74,7 @@ export function StepTwo({ id }: SelectUser) {
                   id="time"
                   required
                 />
+
               </div>
             </div>
           </div>
@@ -87,6 +88,7 @@ export function StepTwo({ id }: SelectUser) {
             {status === "SUCCESS" ? "Success!" : "Continue"}
             {status === "LOADING" && <Spinner />}
           </Button>
+
         </div>
 
         <div className="space-y-6">

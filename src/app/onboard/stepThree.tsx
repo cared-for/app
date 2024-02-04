@@ -20,7 +20,7 @@ const initialState = {
   status: "",
   message: "",
 }
-export function StepThree({ email, id }: SelectUser) {
+export function StepThree({ id }: SelectUser) {
   const [state, formAction] = useFormState(stepThreeSubmit, initialState)
   const [members, setMembers] = useState<string[]>(initialMemberState)
 
@@ -46,6 +46,7 @@ export function StepThree({ email, id }: SelectUser) {
           <div className="flex flex-col space-y-12">
             {members.map((id, i) => (
               <div className="flex flex-col space-y-4" key={id}>
+
                 <div className="flex items-center justify-between h-10">
                   <h1 className="text-2xl font-bold text-[#155724]">
                     Care Member #{i + 1}

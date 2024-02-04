@@ -20,8 +20,6 @@ export default async function Onboard() {
 
   const user = await api.user.get.query({ email: data.user.email! })
 
-  console.log("user: ", user, !user.fullName || !user.phone);
-
   if (!user.fullName || !user.phone) return <StepOne {...user} />
   if (!user.scheduleId) return <StepTwo {...user} />
 

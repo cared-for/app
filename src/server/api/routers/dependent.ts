@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { eq } from "drizzle-orm";
+import { eq, inArray, sql } from "drizzle-orm";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import * as table from "~/server/db/schema";
@@ -13,29 +13,15 @@ export const dependentRouter = createTRPCRouter({
           fullName: z.string(),
           phone: z.string(),
         })),
-      userEmail: z.string(),
+      userId: z.number(),
     }))
     .mutation(async ({ ctx, input }) => {
       try {
-        const { userEmail, dependents } = input;
-
-        const [user] = await ctx.db.select().from(table.users).where(
-          eq(
-            table.users.email,
-            userEmail,
-          )
-        );
-
-        if (!user) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "User not found",
-          });
-        }
+        const { userId, dependents } = input;
 
         const dependentsWithUserId = dependents.map((dependent) => ({
           ...dependent,
-          userId: user.id,
+          userId,
         }))
 
         await ctx.db.insert(table.dependents).values(dependentsWithUserId);
@@ -51,30 +37,13 @@ export const dependentRouter = createTRPCRouter({
 
   create: protectedProcedure
     .input(z.object({
-      id: z.number(),
       fullName: z.string(),
       phone: z.string(),
-      userEmail: z.string(),
+      userId: z.number(),
     }))
     .mutation(async ({ ctx, input }) => {
       try {
-        const { userEmail, ...params } = input;
-
-        const [user] = await ctx.db.select().from(table.users).where(
-          eq(
-            table.users.email,
-            userEmail,
-          )
-        );
-
-        if (!user) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "User not found",
-          });
-        }
-
-        await ctx.db.insert(table.dependents).values({ ...params, userId: user.id });
+        await ctx.db.insert(table.dependents).values(input);
 
         return "success";
       } catch(error: any) {
@@ -86,31 +55,67 @@ export const dependentRouter = createTRPCRouter({
     }),
 
   list: protectedProcedure
-    .input(z.object({ email: z.string() }))
+    .input(z.object({ userId: z.number() }))
     .query(async ({ input, ctx }) => {
       try {
-        const [user] = await ctx.db.select().from(table.users).where(
-          eq(
-            table.users.email,
-            input.email,
-          )
-        );
-
-        if (!user) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "User not found",
-          });
-        }
-
         const dependents = await ctx.db.select().from(table.dependents).where(
           eq(
             table.dependents.userId,
-            user.id,
+            input.userId,
           )
         );
 
         return dependents;
+      } catch (error: any) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: error.message,
+        });
+      }
+    }),
+
+  updateMany: protectedProcedure
+    .input(z.object({
+      depdendents: z.array(
+        z.object({
+          id: z.number(),
+          fullName: z.string().optional(),
+          phone: z.string().optional(),
+        }))
+    }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const fullNameUpdate = input.depdendents.reduce((acc, dependent) => {
+          if (dependent.fullName) {
+            return `${acc} WHEN id = ${dependent.id} THEN ${dependent.fullName}`
+          }
+
+          return acc;
+        }, "(CASE")
+        const phoneUpdate = input.depdendents.reduce((acc, dependent) => {
+          if (dependent.phone) {
+            return `${acc} WHEN id = ${dependent.id} THEN ${dependent.phone}`
+          }
+
+          return acc;
+        }, "(CASE")
+
+        const fullNameSql = sql`${fullNameUpdate} END)`
+        const phoneSql = sql`${phoneUpdate} END)`
+
+        await ctx.db
+          .update(table.dependents)
+          .set({
+            fullName: fullNameSql,
+            phone: phoneSql,
+          })
+          .where(
+            inArray(
+              table.dependents.id,
+              input.depdendents.map((dependent) => dependent.id)
+            )
+          )
+          .returning();
       } catch (error: any) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
@@ -132,6 +137,24 @@ export const dependentRouter = createTRPCRouter({
           eq(
             table.dependents.id,
             id,
+          )
+        );
+      } catch (error: any) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: error.message,
+        });
+      }
+    }),
+
+  delete: protectedProcedure
+    .input(z.object({ dependentIds: z.array(z.number()) }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db.delete(table.dependents).where(
+          inArray(
+            table.dependents.id,
+            input.dependentIds,
           )
         );
       } catch (error: any) {

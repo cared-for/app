@@ -60,3 +60,6 @@ export const dependentRelations = relations(dependents, ({ one }) => ({
     references: [users.id],
   })
 }));
+
+export type SelectDependents = InferSelectModel<typeof dependents>;
+export type InsertDependents = InferInsertModel<typeof dependents>;
