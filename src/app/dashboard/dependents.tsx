@@ -14,7 +14,11 @@ import { Button } from "~/components/ui/button"
 import { SubmitButton } from "~/components/ui/submitButton"
 
 const initialState = { status: "", message: "" }
-export function Dependents({ dependents }: { dependents: SelectDependents[] }) {
+type DependentsProps = {
+  dependents: SelectDependents[];
+  userId: number;
+}
+export function Dependents({ dependents, userId }: DependentsProps) {
   const [state, formAction] = useFormState(dependentsSubmit, initialState)
   const [members, setMembers] = useState(dependents)
 
@@ -24,6 +28,7 @@ export function Dependents({ dependents }: { dependents: SelectDependents[] }) {
         Care Circle
       </h1>
       
+      <input name="userId" type="hidden" value={userId} />
       <div className="flex flex-col gap-y-16">
         {members.map((dependent, i) => (
           <div className="flex flex-col gap-y-6" key={dependent.id}>
@@ -46,21 +51,21 @@ export function Dependents({ dependents }: { dependents: SelectDependents[] }) {
 
             <div className="grid grid-cols-2 gap-6">
               <div className="flex flex-col gap-y-1">
-                <label htmlFor="fullName" className="text-lg font-medium text-[#155724]">
+                <label htmlFor={`fullName-${dependent.id}`} className="text-lg font-medium text-[#155724]">
                   Full Name
                 </label>
 
                 <Input
                   type="string"
-                  name="fullName"
-                  id="fullName"
+                  name={`fullName-${dependent.id}`}
+                  id={`fullName-${dependent.id}`}
                   defaultValue={dependent.fullName ?? ""}
                   required
                 />
               </div>
              
               <div className="flex flex-col gap-y-1">
-                <label className="block text-lg font-medium text-[#155724]" htmlFor="phone">
+                <label className="block text-lg font-medium text-[#155724]" htmlFor={`phone-${dependent.id}`}>
                   Phone
                 </label>
 
@@ -70,8 +75,8 @@ export function Dependents({ dependents }: { dependents: SelectDependents[] }) {
                   </div>
                   <Input
                     className="block rounded-l-none border border-[#c3e6cb] bg-white dark:border-slate-800"
-                    id="phone"
-                    name="phone"
+                    id={`phone-${dependent.id}`}
+                    name={`phone-${dependent.id}`}
                     defaultValue={dependent.phone ? dependent.phone.replace("+1", "") : ""}
                     required
                     placeholder="Phone number"

@@ -4,6 +4,7 @@ import { eq, inArray, sql } from "drizzle-orm";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import * as table from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
+import { PgDialect } from "drizzle-orm/pg-core";
 
 export const dependentRouter = createTRPCRouter({
   createMany: protectedProcedure
@@ -24,9 +25,10 @@ export const dependentRouter = createTRPCRouter({
           userId,
         }))
 
-        await ctx.db.insert(table.dependents).values(dependentsWithUserId);
-
-        return "success";
+        return ctx.db
+          .insert(table.dependents)
+          .values(dependentsWithUserId)
+          .returning();
       } catch (error: any) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
@@ -87,21 +89,21 @@ export const dependentRouter = createTRPCRouter({
       try {
         const fullNameUpdate = input.depdendents.reduce((acc, dependent) => {
           if (dependent.fullName) {
-            return `${acc} WHEN id = ${dependent.id} THEN ${dependent.fullName}`
+            return `${acc} WHEN id = ${dependent.id} THEN '${dependent.fullName}'`
           }
 
           return acc;
         }, "(CASE")
         const phoneUpdate = input.depdendents.reduce((acc, dependent) => {
           if (dependent.phone) {
-            return `${acc} WHEN id = ${dependent.id} THEN ${dependent.phone}`
+            return `${acc} WHEN id = ${dependent.id} THEN '+1${dependent.phone}'`
           }
 
           return acc;
         }, "(CASE")
 
-        const fullNameSql = sql`${fullNameUpdate} END)`
-        const phoneSql = sql`${phoneUpdate} END)`
+        const fullNameSql = sql.raw(`${fullNameUpdate} END)`)
+        const phoneSql = sql.raw(`${phoneUpdate} END)`)
 
         await ctx.db
           .update(table.dependents)

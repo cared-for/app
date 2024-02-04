@@ -1,5 +1,7 @@
 'use server'
 
+import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 import { api } from "~/trpc/server"
   
 export const profileSubmit = async (_: any, formData: FormData) => {
@@ -23,17 +25,21 @@ export const dependentsSubmit = async (_: any, formData: FormData) => {
     // Extract form data
     const data = {
       userId: Number(formData.get('userId')),
-      length: Number(formData.get('length')),
     }
     
     // parse out for the dependents data
-    const dependents = [...Array(data.length).keys()].map((i) => {
+    const keys = Array.from(formData.keys()).map((key) => key.split("-")[1])
+    const uniqueKeys = Array.from(new Set(keys)).filter((key) => key)
+
+    const dependents = uniqueKeys.map((i) => {
       const id = Number(formData.get(`id-${i}`))
       const fullName = formData.get(`fullName-${i}`) as string
       const phone = formData.get(`phone-${i}`) as string
 
       return { id, fullName, phone }
-    })
+    }, {})
+
+    console.log("dependents: ", dependents)
     
     // Need to get the set of new, updated and deleted dependents
     // new dependents are all the ids that aren't in the existing dependents
@@ -48,9 +54,13 @@ export const dependentsSubmit = async (_: any, formData: FormData) => {
       ...(newDependents.map((dependent) => dependent.id)),
       ...(updatedDependents.map((dependent) => dependent.id)),
     ]
-    const deletedDependents = dependents.filter((dependent) => !newAndUpdatedDependentIds.includes(dependent.id))
+    const deletedDependents = existingDependents.filter((dependent) => !newAndUpdatedDependentIds.includes(dependent.id))
+
+    console.log("new dependents: ", newDependents)
+    console.log("updated dependents: ", updatedDependents)
+    console.log("deleted dependents: ", deletedDependents)
     
-    if (newDependents.length) await api.dependent.createMany.mutate({ 
+    if (newDependents.length) await api.dependent.createMany.mutate({  
       userId: data.userId,
       dependents: newDependents,
     })
@@ -60,7 +70,9 @@ export const dependentsSubmit = async (_: any, formData: FormData) => {
     if (deletedDependents.length) await api.dependent.delete.mutate({
       dependentIds: deletedDependents.map((dependent) => dependent.id),
     })
-    
+
+    revalidatePath("/dashboard")
+
     return { status: "SUCCESS" }
   } catch (error: any) {
     return { status: "ERROR", message: error.message }

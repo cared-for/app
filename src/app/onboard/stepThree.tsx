@@ -29,7 +29,7 @@ export function StepThree({ id }: SelectUser) {
       <h1 className="absolute top-4 left-6 text-4xl font-bold text-[#006a4e]">CaredFor</h1>
       
       <form className="max-w-4xl w-full grid grid-cols-2 gap-8" action={formAction} >
-        <input name="id" type="hidden" value={id} />
+        <input name="userId" type="hidden" value={id} />
         <input name="length" type="hidden" value={members.length} />
 
         <div className="flex flex-col min-h-[400px] space-y-6 justify-between">

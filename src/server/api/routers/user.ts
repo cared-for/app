@@ -16,8 +16,6 @@ export const userRouter = createTRPCRouter({
         )
       );
 
-      console.log("user: ", user);
-
       if (!user) {
         throw new TRPCError({
           code: "NOT_FOUND",
@@ -39,8 +37,6 @@ export const userRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { id, ...params }  = input;
       
-      console.log("params: ", params);
-
       const [user] = await ctx.db 
         .update(users)
         .set(params)
@@ -51,8 +47,6 @@ export const userRouter = createTRPCRouter({
           )
         )
         .returning()
-
-      console.log("user in update: ", user);
 
       return user;
     }),

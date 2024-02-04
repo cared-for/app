@@ -19,7 +19,7 @@ export default async function Onboard() {
   }
 
   const user = await api.user.get.query({ email: data.user.email! })
-  const dependents = await api.dependent.list.query({ email: user.email })
+  const dependents = await api.dependent.list.query({ userId: user.id })
   
   return (
     <div className="flex flex-col min-h-screen overflow-y-auto bg-[#e0f0e9] p-6 items-center">
@@ -31,7 +31,7 @@ export default async function Onboard() {
             <Time {...user}/>
             <Profile {...user}/>
           </div>
-          <Dependents dependents={dependents} />
+          <Dependents dependents={dependents} userId={user.id} />
         </div>
       </div>
    </div>
