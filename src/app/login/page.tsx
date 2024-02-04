@@ -10,10 +10,10 @@ import { useFormState } from "react-dom"
 // server actions
 import { login } from "./actions"
 
-// componentsz
+// components
 import { Label } from "~/components/ui/label"
 import { Input } from "~/components/ui/input"
-import { Button } from "~/components/ui/button"
+import { SubmitButton } from "~/components/ui/submitButton"
 
 const initialState = {
   status: "SUCCESS",
@@ -51,14 +51,16 @@ export default function Login() {
                    
                   <Input id="password" required type="password" name="password"/>
                 </div>
-                <Button className="w-full bg-[#006a4e] text-white hover:bg-[#00563f]" >
+
+                <SubmitButton className="w-full bg-[#006a4e] text-white hover:bg-[#00563f]" >
                   Login
-                </Button>
+                </SubmitButton>
+
                 {state.status === "ERROR" && (
                   <p className="text-red-500 text-center">{state.message}</p>
                 )}
                 <div className="flex items-center justify-center gap-x-1 mt-4 text-sm">
-                  <p>Don't have an account?{' '}</p>
+                  <p>Don&apos;t have an account?{' '}</p>
                   <Link className="text-[#006a4e] hover:underline" href="/signup">
                     Sign up
                   </Link>

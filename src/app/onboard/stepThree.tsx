@@ -14,37 +14,46 @@ import { Input } from "~/components/ui/input"
 import { Button } from "~/components/ui/button"
 import type { SelectUser } from "~/server/db/schema"
 
-const initialMemberState = [{
-  id: crypto.randomUUID(),
-  fullName: "",
-  phone: "",
-}]
-type Member = typeof initialMemberState[0]
+const initialMemberState = [crypto.randomUUID()]
+
 export function StepThree({ email, id }: SelectUser) {
   const router = useRouter()
   const [status, setStatus] = useState<"IDLE" | "LOADING" | "SUCCESS" | "ERROR">("IDLE")
   const [isPending, setTransition] = useTransition();
-  const [members, setMembers] = useState<Member[]>(initialMemberState)
+  const [members, setMembers] = useState<string[]>(initialMemberState)
 
   const updateDependents = api.dependent.createMany.useMutation()
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
     try {
+      e.preventDefault()
+
       setStatus("LOADING");
+
+      const form = e.target as HTMLFormElement
+      const formData = new FormData(form)
+      
+      const dependents = [...Array(members.length).keys()].map((i) => {
+        const fullName = formData.get(`fullName-${i}`) as string
+        const phone = formData.get(`phone-${i}`) as string
+
+        return { fullName, phone }
+      })
+
+      console.log("dependents: ", dependents)
 
       const results = await updateDependents.mutateAsync({
         userEmail: email,
-        dependents: members
+        dependents,
       })
 
       console.log("results: ", results);
 
       setStatus("SUCCESS")
 
-      // setTimeout(() => setTransition(() => {
-      //   router.refresh()
-      // }), 500)
+      setTimeout(() => setTransition(() => {
+        router.refresh()
+      }), 500)
     } catch(error) {
       setStatus("ERROR")
     }
@@ -69,8 +78,8 @@ export function StepThree({ email, id }: SelectUser) {
           </div>
           
           <div className="flex flex-col space-y-12">
-            {members.map((member, i) => (
-              <div className="flex flex-col space-y-4" key={member.id}>
+            {members.map((id, i) => (
+              <div className="flex flex-col space-y-4" key={id}>
                 <div className="flex items-center justify-between h-10">
                   <h1 className="text-2xl font-bold text-[#155724]">
                     Care Member #{i + 1}
@@ -80,7 +89,7 @@ export function StepThree({ email, id }: SelectUser) {
                     <Button 
                       className="bg-[#006a4e] text-white hover:bg-[#00563f]" 
                       type="button"
-                      onClick={() => setMembers(prev => prev.filter(({ id }) => member.id !== id))}
+                      onClick={() => setMembers(prev => prev.filter((_id) => id !== _id))}
                     >
                       Remove
                     </Button>
@@ -114,6 +123,7 @@ export function StepThree({ email, id }: SelectUser) {
                       className="block rounded-l-none border border-[#c3e6cb] bg-white dark:border-slate-800"
                       id={`phone-${i}`}
                       name={`phone-${i}`}
+                      maxLength={10}
                       required
                       placeholder="Phone number"
                     />
@@ -124,12 +134,7 @@ export function StepThree({ email, id }: SelectUser) {
                   <Button
                     className="bg-[#006a4e] self-start text-white hover:bg-[#00563f]"
                     type="button"
-                    onClick={() => setMembers(prev => [...prev, {
-                        id: crypto.randomUUID(),
-                        fullName: "",
-                        phone: "",
-                      }]
-                    )}
+                    onClick={() => setMembers(prev => [...prev, crypto.randomUUID()])}
                   >
                     Add Care Member
                   </Button>
