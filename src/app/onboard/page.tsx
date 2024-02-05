@@ -18,7 +18,7 @@ export default async function Onboard() {
     redirect('/')
   }
 
-  const user = await api.user.get.query({ email: data.user.email! })
+  const user = await api.user.get.query({ email: data.user.email! }, { })
   
   if (user.completedUserOnboarding) redirect('/dashboard')
   if (!user.fullName || !user.phone) return <StepOne {...user} />

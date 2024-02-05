@@ -4,9 +4,9 @@ import { env } from "~/env"
 import { api } from "~/trpc/server"
 
 // components
-import { Button } from "~/components/ui/button"
 import type { SelectUser } from "~/server/db/schema"
 import { redirect } from 'next/navigation';
+import { SubmitButton } from './ui/submitButton';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -32,12 +32,12 @@ export function Billing(user: SelectUser) {
           <span className="text-lg text-[#006a4e]">
             There are {trialDaysLeft} days left in your free trial
           </span>
-          <Button 
-            className="text-lg text-[#e0f0e9] bg-[#006a4e]/90 px-4 py-1 rounded-2xl hover:bg-[#006a4e]"
+          <SubmitButton 
+            className="text-lg text-white bg-[#006a4e] rounded-2xl hover:bg-[#00563f]"
             type="submit"
           >
             Subscribe now
-          </Button>
+          </SubmitButton>
         </form>
       ) 
     } else {
@@ -46,12 +46,12 @@ export function Billing(user: SelectUser) {
           <span className="text-lg text-[#006a4e]">
             Your free trial has ended
           </span>
-          <Button 
-            className="text-lg text-[#e0f0e9] bg-[#006a4e]/90 px-4 py-1 rounded-2xl hover:bg-[#006a4e]"
+          <SubmitButton
+            className="text-lg text-white bg-[#006a4e] rounded-2xl hover:bg-[#00563f]"
             type="submit"
           >
             Subscribe now to renew
-          </Button>
+          </SubmitButton>
         </form>
       ) 
     }

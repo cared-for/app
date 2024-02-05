@@ -14,17 +14,17 @@ import { signup } from "./actions"
 import { Label } from "~/components/ui/label"
 import { Input } from "~/components/ui/input"
 import { Button } from "~/components/ui/button"
+import { SubmitButton } from "~/components/ui/submitButton"
 
 const initialState = {
-  email: "",
-  password: "",
+  status: "",
+  message: "",
 }
-
 export default function Signup() {
   const [state, formAction] = useFormState(signup, initialState)
 
   return (
-    <div key="1" className="flex flex-col min-h-screen bg-[#e0f0e9]">
+    <div className="flex flex-col min-h-screen bg-[#e0f0e9]">
       <header className="flex items-center justify-between px-6 py-4">
         <h1 className="text-2xl font-bold text-[#006a4e]">SeniorCheck</h1>
       </header>
@@ -44,9 +44,9 @@ export default function Signup() {
                   <Label htmlFor="password" className="text-base">Password</Label>
                   <Input id="password" required type="password" name="password"/>
                 </div>
-                <Button className="w-full bg-[#006a4e] text-white hover:bg-[#00563f]" type="submit">
+                <SubmitButton className="w-full bg-[#006a4e] text-white hover:bg-[#00563f]" type="submit">
                   Sign Up
-                </Button>
+                </SubmitButton>
                 {state.status === "ERROR" && (
                   <p className="text-red-500 text-center">{state.message}</p>
                 )}

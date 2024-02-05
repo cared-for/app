@@ -39,7 +39,6 @@ export function StepTwo({ id }: SelectUser) {
         minute: utcMinute,
       })
 
-      revalidatePath("/onboard")
       router.refresh()
     } catch(error) {
       setStatus("ERROR")
