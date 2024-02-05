@@ -4,7 +4,6 @@ import { eq, inArray, sql } from "drizzle-orm";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import * as table from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
-import { PgDialect } from "drizzle-orm/pg-core";
 
 export const dependentRouter = createTRPCRouter({
   createMany: protectedProcedure

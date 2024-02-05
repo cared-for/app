@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
@@ -34,12 +35,14 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <api.Provider client={trpcClient} queryClient={queryClient}>
         {props.children}
-        <ProgressBar
-          height="4px"
-          color="#006a4e"
-          options={{ showSpinner: false }}
-          shallowRouting
-        />
+        <Suspense fallback={null} >
+          <ProgressBar
+            height="4px"
+            color="#006a4e"
+            options={{ showSpinner: false }}
+            shallowRouting
+          />
+        </Suspense>
       </api.Provider>
     </QueryClientProvider>
   );

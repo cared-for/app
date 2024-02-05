@@ -22,7 +22,7 @@ export async function signup(_: any, formData: FormData) {
   const { error } = await supabase.auth.signUp(data)
   
   if (error) {
-    return { status: "ERROR", error: error.message }
+    return { status: "ERROR", message: error.message }
   }
   
   // TODO: handle user creation error
