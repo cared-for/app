@@ -1,0 +1,1 @@
+ALTER TABLE "caredFor_users" ALTER COLUMN "customer_id" SET NOT NULL;

@@ -5,6 +5,7 @@
  * @see https://v0.dev/t/tXmzhc69LEs
  */
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { revalidatePath } from "next/cache"
 import { api } from "~/trpc/react"
 
@@ -15,6 +16,7 @@ import { Button } from "~/components/ui/button"
 import type { SelectUser } from "~/server/db/schema"
 
 export function StepTwo({ id }: SelectUser) {
+  const router = useRouter()
   const [status, setStatus] = useState<"IDLE" | "LOADING" | "SUCCESS" | "ERROR">("IDLE")
   const updateCheckIn = api.checkIn.update.useMutation()
 
@@ -38,6 +40,7 @@ export function StepTwo({ id }: SelectUser) {
       })
 
       revalidatePath("/onboard")
+      router.refresh()
     } catch(error) {
       setStatus("ERROR")
     }

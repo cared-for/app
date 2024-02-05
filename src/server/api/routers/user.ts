@@ -26,6 +26,24 @@ export const userRouter = createTRPCRouter({
       return user;
     }),
 
+  create: protectedProcedure
+    .input(z.object({ email: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const customer = await ctx.stripe.customers.create({
+        email: input.email,
+      });
+
+      const [user] = await ctx.db
+        .insert(users)
+        .values({ 
+          email: input.email,
+          customerId: customer.id,
+        })
+        .returning();
+
+      return user;
+    }),
+
   update: protectedProcedure
     .input(z.object({
       id: z.number(),

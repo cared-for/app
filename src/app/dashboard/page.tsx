@@ -8,6 +8,7 @@ import { api } from "~/trpc/server"
 import { Time } from "./time"
 import { Dependents } from "./dependents"
 import { Profile } from "./profile"
+import { Billing } from "~/components/billing"
 
 export default async function Onboard() {
   const cookieStore = cookies()
@@ -24,7 +25,10 @@ export default async function Onboard() {
   return (
     <div className="flex flex-col min-h-screen overflow-y-auto bg-[#e0f0e9] p-6 items-center">
       <div className="flex flex-col max-w-[1050px]">
-        <h1 className="text-4xl font-bold text-[#006a4e] h-[65px]">CaredFor</h1>
+        <div className="flex h-[65px] items-baseline justify-between">
+          <h1 className="text-4xl font-bold text-[#006a4e]">CaredFor</h1>
+          <Billing {...user} />
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div className="flex flex-col gap-12">

@@ -6,12 +6,7 @@ import { redirect } from 'next/navigation'
 
 import { createClient } from '~/lib/supabase/actions'
 
-import { db } from '~/server/db'
-import { users } from '~/server/db/schema'
-
-const createUser = async (email: string) => {
-    return db.insert(users).values({ email })
-}
+import { api } from '~/trpc/server'
 
 export async function signup(_: any, formData: FormData) {
   const cookieStore = cookies()
@@ -31,7 +26,7 @@ export async function signup(_: any, formData: FormData) {
   }
   
   // TODO: handle user creation error
-  await createUser(data.email)
+  await api.user.create.mutate({ email: data.email })
 
   revalidatePath('/onboard', 'layout')
   redirect('/onboard')

@@ -11,11 +11,16 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import { cookies } from "next/headers";
 
+import { Client } from "@upstash/qstash"
+import Stripe from "stripe"
 import { db } from "~/server/db";
 import { client as twilio } from "~/server/twilio";
-import { Client } from "@upstash/qstash"
 import { createClient } from "~/lib/supabase/server";
 import { env } from "~/env";
+
+
+const qStash = new Client({ token: env.UPSTASH_TOKEN })
+const stripe = new Stripe(env.STRIPE_SECRET_KEY)
 
 /**
  * 1. CONTEXT
@@ -31,8 +36,6 @@ import { env } from "~/env";
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const supabase = createClient(cookies());
-  const qStash = new Client({ token: env.UPSTASH_TOKEN })
-  
   const { data } = await supabase.auth.getUser();
 
   return {
@@ -40,6 +43,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
     twilio,
     supabase,
     qStash,
+    stripe,
     user: data.user,
     ...opts,
   };

@@ -16,8 +16,9 @@ const initialState = {
   status: "",
   message: "",
 }
-export function StepOne({ email, id }: SelectUser) {
+export function StepOne({ email, fullName, phone, id }: SelectUser) {
   const [state, formAction] = useFormState(stepOneSubmit, initialState)
+  console.log("email: ", email, fullName, phone)
 
   return (
     <div className="flex flex-col min-h-screen bg-[#e0f0e9] items-center justify-center p-4">

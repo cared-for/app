@@ -6,9 +6,9 @@ import {
   pgTableCreator,
   serial,
   timestamp,
+  time,
   varchar,
   boolean,
-  time,
   integer,
   text,
   uniqueIndex,
@@ -26,14 +26,16 @@ export const createTable = pgTableCreator((name) => `caredFor_${name}`);
 
 export const users = createTable('users', {
   id: serial('id').primaryKey(),
+  customerId: varchar('customer_id', { length: 256 }).notNull(),
   fullName: text('full_name'),
   phone: varchar('phone', { length: 256 }),
   email: varchar('email', { length: 256 }).notNull(),
   checkedIn: boolean('checked_in').default(false),
   scheduleId: varchar('schedule_id', { length: 256 }),
+  checkInTime: time('check_in_time', { withTimezone: false }),
   attemptCount: integer('attempt_count').default(0),
   onFreeTrial: boolean('on_free_trial').default(true),
-  freeTrialStart: timestamp('free_trial_start', { withTimezone: false }),
+  freeTrialStart: timestamp('free_trial_start', { withTimezone: false }).defaultNow(),
   completedUserOnboarding: boolean('completed_user_onboarding').default(false),
 }, (users) => ({
   emailIndex: uniqueIndex('email_idx').on(users.email)

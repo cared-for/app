@@ -29,18 +29,25 @@ export const checkInRouter = createTRPCRouter({
           message: "User not found",
         })
 
+        console.log("user exists")
+
         if (user.scheduleId) {
           await ctx.qStash.schedules.delete(user.scheduleId)
         }
 
         const { scheduleId } = await ctx.qStash.schedules.create({
-          destination: `${env.HOST}?userId=${id}`,
+          destination: `${env.TWILIO_HOST}?userId=${id}`,
           cron: `${minute} ${hour} * * *`,
         })
 
+        console.log("schedule created: ", scheduleId)
+
         await ctx.db
           .update(users)
-          .set({ scheduleId })
+          .set({ 
+            scheduleId,
+            checkInTime: `${hour}:${minute}`,
+          })
           .where(
             eq(
               users.id,
@@ -50,9 +57,11 @@ export const checkInRouter = createTRPCRouter({
 
         return "success";
       } catch (error) {
+        console.log("error: ", error)
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Failed to update checkin time",
+          cause: error,
         })
       }
     }),

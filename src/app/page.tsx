@@ -44,7 +44,7 @@ export default function Home() {
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-6">
                   <h1 className="text-3xl font-bold tracking-tighter text-[#006a4e] sm:text-5xl xl:text-6xl/none">
-                    Daily Check-Ins to keep your loves ones safe & connected
+                    Daily Check-Ins for your loved ones living alone
                   </h1>
                   <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
                     CaredFor is a simple check-in system that calls your loved ones phones once a day to ensure they are safe and
