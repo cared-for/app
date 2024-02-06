@@ -8,7 +8,7 @@ export default function HowItWorks() {
           How It Works
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-20">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-20">
           <div className="flex flex-col gap-y-6 text-center">
             <Phone className="h-[200px] w-[200px] lg:h-[200px] lg:w-[200px] text-[#006a4e] self-center place-self-center bg-[#F1F8F5] p-6 rounded-xl" />
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#006a4e]">Get Notified</h2>
@@ -28,7 +28,7 @@ export default function HowItWorks() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-y-6 text-center col-span-2 lg:col-span-1">
+          <div className="flex flex-col gap-y-6 text-center">
             <MessageCircleWarning className="h-[200px] w-[200px] lg:h-[200px] lg:w-[200px] text-[#006a4e] self-center place-self-center bg-[#F1F8F5] p-6 rounded-xl" />
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#006a4e] break-normal">No Answer!</h2>
             <p className="text-gray-500 text-md lg:text-lg">

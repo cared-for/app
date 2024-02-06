@@ -9,7 +9,7 @@ export default function Pricing() {
         Pricing
       </h2>
       
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-6 p-6">
         <div className="flex flex-col p-6 rounded-2xl bg-[#F1F8F5] min-w-[400px] gap-y-6">
           <h1 className="text-3xl font-bold text-[#006a4e]">Standard</h1> 
 
