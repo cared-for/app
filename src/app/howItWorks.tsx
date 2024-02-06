@@ -8,11 +8,11 @@ export default function HowItWorks() {
           How It Works
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-20">
           <div className="flex flex-col gap-y-6 text-center">
             <Phone className="h-[200px] w-[200px] lg:h-[200px] lg:w-[200px] text-[#006a4e] self-center place-self-center bg-[#F1F8F5] p-6 rounded-xl" />
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#006a4e]">Get Notified</h2>
-            <p className="text-gray-500 text-md lg:text-lg">
+            <p className="text-gray-500 text-md lg:text-lg break-normal">
               A call will be made to you at the same time every day at the time you choose.<br/>
               You answer the phone and press &quot;1&quot; <br/><span className="font-bold">that&apos;s it!</span><br/>
               You are now checked in for the day.
@@ -21,7 +21,7 @@ export default function HowItWorks() {
           
           <div className="flex flex-col gap-y-6 text-center">
             <Clock className="h-[200px] w-[200px] lg:h-[200px] lg:w-[200px] text-[#006a4e] self-center place-self-center bg-[#F1F8F5] p-6 rounded-xl" />
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#006a4e]">Missed a Call?</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#006a4e] break-normal">Missed a Call?</h2>
             <p className="text-gray-500 text-md lg:text-lg">
              No worries! You'll get another call again in 15 minutes.
              These follow up calls will happen 4 times over the course of an hour until you check in.
@@ -30,7 +30,7 @@ export default function HowItWorks() {
 
           <div className="flex flex-col gap-y-6 text-center col-span-2 lg:col-span-1">
             <MessageCircleWarning className="h-[200px] w-[200px] lg:h-[200px] lg:w-[200px] text-[#006a4e] self-center place-self-center bg-[#F1F8F5] p-6 rounded-xl" />
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#006a4e]">No Answer!</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#006a4e] break-normal">No Answer!</h2>
             <p className="text-gray-500 text-md lg:text-lg">
              If you miss your check-in 4 times in a row, the people in your care circle will be sent a text,
              being notified of your missed check-in.
