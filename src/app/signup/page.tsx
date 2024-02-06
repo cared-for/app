@@ -25,7 +25,7 @@ export default function Signup() {
   return (
     <div className="flex flex-col min-h-screen bg-[#e0f0e9]">
       <header className="flex items-center justify-between px-6 py-4">
-        <h1 className="text-2xl font-bold text-[#006a4e]">SeniorCheck</h1>
+        <Link href="/" className="text-2xl font-bold text-[#006a4e]">CaredFor</Link>
       </header>
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 bg-[#e0f0e9]">
