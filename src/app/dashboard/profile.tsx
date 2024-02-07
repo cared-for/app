@@ -10,7 +10,7 @@ import { Input } from '~/components/ui/input'
 import { SubmitButton } from '~/components/ui/submitButton'
 
 const initialState = { status: "", message: "" }
-export function Profile(user: SelectUser) {
+export function Profile({ isDependent, ...user }: SelectUser & { isDependent: boolean }) {
   const [state, formAction] = useFormState(profileSubmit, initialState)
 
   return (
@@ -19,7 +19,7 @@ export function Profile(user: SelectUser) {
         Your Information
       </h1>
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <input name="id" type="hidden" value={user.id} />
         <div className="flex flex-col gap-y-1">
           <label htmlFor="fullName" className="text-lg font-medium text-[#155724]">
@@ -44,13 +44,14 @@ export function Profile(user: SelectUser) {
             type="email"
             name="email"
             id="email"
-            defaultValue={user.email}
-            disabled
+            defaultValue={user.email ?? ""}
+            readOnly={!isDependent}
+            className={`${!isDependent ? "bg-slate-200 opacity-50" : "bg-white"} border border-[#c3e6cb] dark:border-slate-800`}
           />
         </div>
       </div>
      
-      <div className="flex flex-col gap-y-1">
+      <div className="flex flex-col gap-y-1 lg:col-span-2">
         <label className="block text-lg font-medium text-[#155724]" htmlFor="phone">
           Phone
         </label>

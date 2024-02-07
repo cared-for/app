@@ -61,7 +61,7 @@ export const dependents = createTable('dependents', {
   email: varchar('email', { length: 256 }),
   userId: integer('user_id').references(() => users.id),
 }, (dependents) => ({
-  emailIndex: uniqueIndex('dependents_email_idx').on(dependents.email)
+  emailIndex: uniqueIndex('dependents_user_email_idx').on(dependents.userId, dependents.email)
 }))
 
 export const dependentRelations = relations(dependents, ({ one }) => ({

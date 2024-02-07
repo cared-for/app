@@ -18,7 +18,7 @@ type DependentsProps = {
   dependents: SelectDependents[];
   userId: number;
 }
-export function Dependents({ dependents, userId }: DependentsProps) {
+export function Dependents({ dependents, userId, isDependent }: DependentsProps & { isDependent: boolean }) {
   const [state, formAction] = useFormState(dependentsSubmit, initialState)
   const [members, setMembers] = useState(dependents)
 
@@ -49,7 +49,7 @@ export function Dependents({ dependents, userId }: DependentsProps) {
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="flex flex-col gap-y-1">
                 <label htmlFor={`fullName-${dependent.id}`} className="text-lg font-medium text-[#155724]">
                   Full Name
@@ -63,8 +63,24 @@ export function Dependents({ dependents, userId }: DependentsProps) {
                   required
                 />
               </div>
-             
+
               <div className="flex flex-col gap-y-1">
+                <label htmlFor={`email-${dependent.id}`} className="text-lg font-medium text-[#155724]">
+                  Email
+                </label>
+
+                <Input
+                  type="string"
+                  name={`email-${dependent.id}`}
+                  id={`email-${dependent.id}`}
+                  defaultValue={dependent.email ?? ""}
+                  readOnly={isDependent && i === 0 && true}
+                  className={`${isDependent && i === 0 ? "bg-slate-200 opacity-50" : "bg-white"} border border-[#c3e6cb] dark:border-slate-800`}
+                  required
+                />
+              </div>
+             
+              <div className="flex flex-col gap-y-1 lg:col-span-2">
                 <label className="block text-lg font-medium text-[#155724]" htmlFor={`phone-${dependent.id}`}>
                   Phone
                 </label>
@@ -80,6 +96,8 @@ export function Dependents({ dependents, userId }: DependentsProps) {
                     defaultValue={dependent.phone ? dependent.phone.replace("+1", "") : ""}
                     required
                     placeholder="Phone number"
+                    maxLength={10}
+                    minLength={10}
                   />
                 </div>
               </div>

@@ -19,7 +19,6 @@ export const dependentRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       try {
         const { userId, dependents } = input;
-        console.log("dependents: ", dependents)
 
         const dependentsWithUserId = dependents.map((dependent) => ({
           ...dependent,

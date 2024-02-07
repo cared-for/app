@@ -8,7 +8,8 @@ export const profileSubmit = async (_: any, formData: FormData) => {
     const data = {
       id: Number(formData.get('id')),
       fullName: formData.get('fullName') as string,
-      phone: `+1${formData.get('phone') as string}`
+      phone: `+1${formData.get('phone') as string}`,
+      email: formData.get('email') as string,
     }
 
     const userUpdate = await api.user.update.mutate(data)
@@ -29,13 +30,15 @@ export const dependentsSubmit = async (_: any, formData: FormData) => {
     // parse out for the dependents data
     const keys = Array.from(formData.keys()).map((key) => key.split("-")[1])
     const uniqueKeys = Array.from(new Set(keys)).filter((key) => key)
+    console.log("unique keys: ", uniqueKeys)
 
     const dependents = uniqueKeys.map((i) => {
       const id = Number(formData.get(`id-${i}`))
       const fullName = formData.get(`fullName-${i}`) as string
       const phone = formData.get(`phone-${i}`) as string
+      const email = formData.get(`email-${i}`) as string
 
-      return { id, fullName, phone }
+      return { id, fullName, phone: `+1${phone}`, email }
     }, {})
 
     console.log("dependents: ", dependents)

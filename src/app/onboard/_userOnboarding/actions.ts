@@ -12,12 +12,10 @@ export const stepOneSubmit = async (_: any, formData: FormData) => {
       phone: `+1${formData.get('phone') as string}`
     }
 
-    const userUpdate = await api.user.update.mutate(data)
+    await api.user.update.mutate(data)
 
     revalidatePath("/onboard")
     redirect("/onboard")
-    
-    return { status: "SUCCESS", data: userUpdate }
   } catch (error: any) {
     return { status: "ERROR", message: error.message }
   }
@@ -32,15 +30,16 @@ export const stepThreeSubmit = async (_: any, formData: FormData) => {
   const dependents = [...Array(data.length).keys()].map((i) => {
     const fullName = formData.get(`fullName-${i}`) as string
     const phone = formData.get(`phone-${i}`) as string
+    const email = formData.get(`email-${i}`) as string
 
-    return { fullName, phone }
+    return { fullName, phone, email }
   })
 
-  await api.user.update.mutate({ id: data.userId, completedUserOnboarding: true })
   await api.dependent.createMany.mutate({
     userId: data.userId,
     dependents,
   })
+  await api.user.update.mutate({ id: data.userId, completedUserOnboarding: true })
 
   revalidatePath("/dashboard")
   redirect("/dashboard")
