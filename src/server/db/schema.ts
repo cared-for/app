@@ -15,7 +15,6 @@ import {
 } from "drizzle-orm/pg-core";
 import { type InferSelectModel, type InferInsertModel } from 'drizzle-orm'
 
-
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
  * database instance for multiple projects.
@@ -26,16 +25,23 @@ export const createTable = pgTableCreator((name) => `caredFor_${name}`);
 
 export const users = createTable('users', {
   id: serial('id').primaryKey(),
-  customerId: varchar('customer_id', { length: 256 }).notNull(),
+
+  // basic info
   fullName: text('full_name'),
   phone: varchar('phone', { length: 256 }),
-  email: varchar('email', { length: 256 }).notNull(),
+  email: varchar('email', { length: 256 }),
+  
+  // check-in info
   checkedIn: boolean('checked_in').default(false),
-  scheduleId: varchar('schedule_id', { length: 256 }),
   checkInTime: time('check_in_time', { withTimezone: false }),
+  scheduleId: varchar('schedule_id', { length: 256 }),
   attemptCount: integer('attempt_count').default(0),
+  
+  // payment info
   onFreeTrial: boolean('on_free_trial').default(true),
   freeTrialStart: timestamp('free_trial_start', { withTimezone: false }).defaultNow(),
+
+  // onboarding info
   completedUserOnboarding: boolean('completed_user_onboarding').default(false),
 }, (users) => ({
   emailIndex: uniqueIndex('email_idx').on(users.email)
@@ -50,8 +56,8 @@ export type InsertUser = InferInsertModel<typeof users>;
 
 export const dependents = createTable('dependents', {
   id: serial('id').primaryKey().notNull(),
-  fullName: text('full_name').notNull(),
-  phone: varchar('phone', { length: 256 }).notNull(),
+  fullName: text('full_name'),
+  phone: varchar('phone', { length: 256 }),
   email: varchar('email', { length: 256 }),
   userId: integer('user_id').references(() => users.id),
 });
@@ -65,3 +71,23 @@ export const dependentRelations = relations(dependents, ({ one }) => ({
 
 export type SelectDependents = InferSelectModel<typeof dependents>;
 export type InsertDependents = InferInsertModel<typeof dependents>;
+
+// relationalId can either be a user id or a dependent id
+// this is used to associate a stripe customer with a user or dependent
+export const stripeCustomers = createTable('stripe_customers', {
+  id: serial('id').primaryKey().notNull(),
+  customerId: varchar('customer_id', { length: 256 }).notNull(),
+  relationalId: integer('relational_id').notNull(),
+})
+
+export const stripeCustomerRelations = relations(stripeCustomers, ({ one }) => ({
+  users: one(users, {
+    fields: [stripeCustomers.relationalId],
+    references: [users.id],
+  }),
+  dependents: one(dependents, {
+    fields: [stripeCustomers.relationalId],
+    references: [dependents.id],
+  })
+}))
+

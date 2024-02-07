@@ -57,6 +57,13 @@
       "when": 1707122084978,
       "tag": "0007_neat_quasar",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1707298018990,
+      "tag": "0008_open_gambit",
+      "breakpoints": true
     }
   ]
 }

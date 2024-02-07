@@ -8,19 +8,19 @@ export default function Pricing() {
       <h2 className="text-3xl font-bold tracking-tighter text-[#006a4e] sm:text-4xl md:text-5xl lg:text-6xl/none text-center">
         Pricing
       </h2>
-      
+
       <div className="flex flex-col lg:flex-row gap-6 p-6">
-        <div className="flex flex-col p-6 rounded-2xl bg-[#F1F8F5] min-w-[400px] gap-y-6">
-          <h1 className="text-3xl font-bold text-[#006a4e]">Standard</h1> 
+        <div className="flex flex-col p-6 rounded-2xl bg-[#F1F8F5] gap-y-6">
+          <h1 className="text-2xl lg:text-3xl font-bold text-[#006a4e]">Standard</h1> 
 
           <div className="grid grid-cols-3 gap-x-6 items-baseline">
-            <h5 className="text-[#006a4e] text-lg line-through">
+            <h5 className="text-[#006a4e] lg:text-lg line-through text-center">
               $20
             </h5>
-            <h3 className="text-[#006a4e] font-bold text-6xl">
+            <h3 className="text-[#006a4e] font-bold text-3xl lg:text-6xl text-center">
               $15
             </h3>
-            <h5 className="text-[#006a4e] font-medium text-sm place-self-end">
+            <h5 className="text-[#006a4e] font-medium text-sm place-self-end text-center">
               PER MONTH
             </h5>
           </div>
@@ -28,17 +28,17 @@ export default function Pricing() {
           <div className="flex flex-col justify-center gap-y-2">
             <div className="flex items-center gap-x-2">
               <CheckCircle2 className="text-[#F1F8F5] w-7 h-7" fill="#006a4e"/>
-              <p className="text-[#006a4e] text-xl">1 Daily check-in</p> 
+              <p className="text-[#006a4e] lg:text-xl">1 Daily check-in</p> 
             </div>
 
             <div className="flex items-center gap-x-2">
               <CheckCircle2 className="text-[#F1F8F5] w-7 h-7" fill="#006a4e"/>
-              <p className="text-[#006a4e] text-xl">Up to 8 Care Circle members</p> 
+              <p className="text-[#006a4e] lg:text-xl">Up to 8 Care Circle members</p> 
             </div>
 
             <div className="flex items-center gap-x-2 opacity-50">
               <CheckCircle2 className="text-[#F1F8F5] w-7 h-7" fill="#6b7280"/>
-              <p className="text-gray-500 text-xl">
+              <p className="text-gray-500 lg:text-xl">
                 <span className="line-through" >Multiple Languages</span>
                 {' '}Coming soon
               </p>
@@ -52,20 +52,20 @@ export default function Pricing() {
           </Button>
         </div>
 
-        <div className="flex flex-col p-6 rounded-2xl bg-[#F1F8F5] min-w-[400px] gap-y-6">
+        <div className="flex flex-col p-6 rounded-2xl bg-[#F1F8F5] gap-y-6">
           <div className="flex justify-between items-baseline">
-            <h1 className="text-3xl font-bold text-[#006a4e]">Lifetime Deal</h1> 
+            <h1 className="text-2xl lg:text-3xl font-bold text-[#006a4e]">Lifetime Deal</h1> 
             <p className="text-[#006a4e] font-medium text-sm">14/50 FILLED</p>
           </div>
 
           <div className="grid grid-cols-3 gap-x-6 items-baseline">
-            <h5 className="text-[#006a4e] text-lg line-through">
+            <h5 className="text-[#006a4e] lg:text-lg line-through text-center">
               $75
             </h5>
-            <h3 className="text-[#006a4e] font-bold text-6xl">
+            <h3 className="text-[#006a4e] font-bold text-3xl lg:text-6xl text-center">
               $50
             </h3>
-            <h5 className="text-[#006a4e] font-medium text-sm place-self-end">
+            <h5 className="text-[#006a4e] font-medium text-sm place-self-end text-center">
               ONE TIME
             </h5>
           </div>
@@ -73,7 +73,7 @@ export default function Pricing() {
           <div className="flex flex-col justify-center gap-y-2">
             <div className="flex items-center gap-x-2">
               <CheckCircle2 className="text-[#F1F8F5] w-7 h-7" fill="#006a4e"/>
-              <p className="text-[#006a4e] text-xl">Everything from Standard</p> 
+              <p className="text-[#006a4e] lg:text-xl">Everything from Standard</p> 
             </div>
          </div>
 
