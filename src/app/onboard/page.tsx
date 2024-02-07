@@ -18,11 +18,13 @@ export default async function Onboard() {
     redirect('/')
   }
 
-  const user = await api.user.get.query({ email: data.user.email! }, { })
+  const metadata = data.user.user_metadata
+  const user = await api.user.get.query({ id: metadata.userId as number })
+  const dependent = await api.dependent.get.query({ id: metadata.dependentId })
   
   if (user.completedUserOnboarding) redirect('/dashboard')
-  if (!user.fullName || !user.phone) return <StepOne {...user} />
+  if (!user.email || !user.fullName || !user.phone) return <StepOne {...user} isDependent={metadata.isDependent} />
   if (!user.scheduleId) return <StepTwo {...user} />
 
-  return <StepThree {...user} />
+  return <StepThree {...user} dependent={dependent} isDependent={metadata.isDependent} />
 }

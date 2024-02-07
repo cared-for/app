@@ -16,7 +16,7 @@ const initialState = {
   status: "",
   message: "",
 }
-export function StepOne({ email, fullName, phone, id }: SelectUser) {
+export function StepOne({ email, id, isDependent }: SelectUser & { isDependent: boolean }) {
   const [state, formAction] = useFormState(stepOneSubmit, initialState)
 
   return (
@@ -34,14 +34,14 @@ export function StepOne({ email, fullName, phone, id }: SelectUser) {
           <div className="flex flex-col space-y-4">
             <div className="flex flex-col gap-y-1">
               <label className="block text-lg font-medium text-[#155724]" htmlFor="fullName">
-                Full Name
+                {isDependent && "Loved One's"} Full Name
               </label>
               <Input className="border border-[#c3e6cb] bg-white" id="fullName" name="fullName" placeholder="John Doe" required/>
             </div>
             
             <div className="flex flex-col gap-y-1">
               <label className="block text-lg font-medium text-[#155724]" htmlFor="phone">
-                Phone
+                {isDependent && "Loved One's"} Phone
               </label>
 
               <div className="flex">
@@ -62,14 +62,15 @@ export function StepOne({ email, fullName, phone, id }: SelectUser) {
             
             <div className="flex flex-col gap-y-1">
               <label className="block text-lg font-medium text-[#155724]" htmlFor="email">
-                Email
+                {isDependent && "Loved One's"} Email
               </label>
               <Input
                 className="border border-[#c3e6cb] bg-slate-100"
                 id="email"
-                disabled
+                name="email"
+                disabled={!isDependent}
                 placeholder="john.doe@example.com"
-                value={email}
+                value={email ?? undefined}
                 type="email"
               />
             </div>

@@ -11,18 +11,18 @@ import { useFormState } from "react-dom"
 // components
 import { Input } from "~/components/ui/input"
 import { Button } from "~/components/ui/button"
-import type { SelectUser } from "~/server/db/schema"
+import type { SelectDependents, SelectUser } from "~/server/db/schema"
 import { SubmitButton } from "~/components/ui/submitButton"
 import { stepThreeSubmit } from "./actions"
 
-const initialMemberState = [crypto.randomUUID()]
+const initialMemberState = [Math.random()]
 const initialState = {
   status: "",
   message: "",
 }
-export function StepThree({ id }: SelectUser) {
+export function StepThree({ id, dependent, isDependent }: SelectUser & { dependent?: SelectDependents, isDependent: boolean }) {
   const [state, formAction] = useFormState(stepThreeSubmit, initialState)
-  const [members, setMembers] = useState<string[]>(initialMemberState)
+  const [members, setMembers] = useState<number[]>(isDependent && dependent ?  [dependent.id] : initialMemberState)
 
   return (
     <div className="flex flex-col min-h-screen bg-[#e0f0e9] items-center justify-center p-4 lg:p-32">
@@ -30,6 +30,8 @@ export function StepThree({ id }: SelectUser) {
       
       <form className="max-w-4xl w-full grid grid-cols-2 gap-8" action={formAction} >
         <input name="userId" type="hidden" value={id} />
+        <input name="dependentId" type="hidden" value={dependent?.id ?? ""} />
+        <input name="isDependent" type="hidden" value={isDependent ? "true" : "false"} />
         <input name="length" type="hidden" value={members.length} />
 
         <div className="flex flex-col min-h-[400px] space-y-6 justify-between">
@@ -46,6 +48,7 @@ export function StepThree({ id }: SelectUser) {
           <div className="flex flex-col space-y-12">
             {members.map((id, i) => (
               <div className="flex flex-col space-y-4" key={id}>
+                <input name={`id-${i}`} type="hidden" value={id} />
 
                 <div className="flex items-center justify-between h-10">
                   <h1 className="text-2xl font-bold text-[#155724]">
@@ -75,7 +78,22 @@ export function StepThree({ id }: SelectUser) {
                     required
                   />
                 </div>
-                
+
+                <div className="flex flex-col gap-y-1">
+                  <label className="block text-lg font-medium text-[#155724]" htmlFor={`fullName-${i}`}>
+                    Email
+                  </label>
+                  <Input
+                    className="border border-[#c3e6cb] bg-white"
+                    id={`email-${i}`}
+                    name={`email-${i}`}
+                    defaultValue={isDependent && i === 0 ? dependent!.email! : undefined}
+                    placeholder="johndoe@gmail.com"
+                    disabled={isDependent && i === 0}
+                    required
+                  />
+                </div>
+ 
                 <div className="flex flex-col gap-y-1">
                   <label className="block text-lg font-medium text-[#155724]" htmlFor={`phone-${i}`}>
                     Phone
@@ -91,6 +109,7 @@ export function StepThree({ id }: SelectUser) {
                       id={`phone-${i}`}
                       name={`phone-${i}`}
                       maxLength={10}
+                      minLength={10}
                       required
                       placeholder="Phone number"
                     />
@@ -101,7 +120,7 @@ export function StepThree({ id }: SelectUser) {
                   <Button
                     className="bg-[#006a4e] self-start text-white hover:bg-[#00563f]"
                     type="button"
-                    onClick={() => setMembers(prev => [...prev, crypto.randomUUID()])}
+                    onClick={() => setMembers(prev => [...prev, Math.random()])}
                   >
                     Add Care Member
                   </Button>

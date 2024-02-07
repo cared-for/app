@@ -64,6 +64,13 @@
       "when": 1707298018990,
       "tag": "0008_open_gambit",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1707300084526,
+      "tag": "0009_happy_ozymandias",
+      "breakpoints": true
     }
   ]
 }

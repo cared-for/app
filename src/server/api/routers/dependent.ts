@@ -12,6 +12,7 @@ export const dependentRouter = createTRPCRouter({
         z.object({
           fullName: z.string(),
           phone: z.string(),
+          email: z.string(),
         })),
       userId: z.number(),
     }))
@@ -38,16 +39,42 @@ export const dependentRouter = createTRPCRouter({
 
   create: protectedProcedure
     .input(z.object({
-      fullName: z.string(),
-      phone: z.string(),
+      fullName: z.string().optional(),
+      phone: z.string().optional(),
+      email: z.string().optional(),
       userId: z.number(),
     }))
     .mutation(async ({ ctx, input }) => {
       try {
-        await ctx.db.insert(table.dependents).values(input);
+        const [dependent] = await ctx.db
+          .insert(table.dependents)
+          .values(input)
+          .returning();
 
-        return "success";
+        return dependent;
       } catch(error: any) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: error.message,
+        });
+      }
+    }),
+
+  get: protectedProcedure
+    .input(z.object({ id: z.number().optional() }))
+    .query(async ({ input, ctx }) => {
+      try {
+        if (!input.id) return null;
+
+        const [dependent] = await ctx.db.select().from(table.dependents).where(
+          eq(
+            table.dependents.id,
+            input.id,
+          )
+        );
+
+        return dependent;
+      } catch (error: any) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: error.message,

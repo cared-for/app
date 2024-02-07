@@ -7,12 +7,12 @@ import { TRPCError } from "@trpc/server";
 
 export const userRouter = createTRPCRouter({
   get: protectedProcedure
-    .input(z.object({ email: z.string() }))
+    .input(z.object({ id: z.number() }))
     .query(async ({ input, ctx }) => {
       const [user] = await ctx.db.select().from(users).where(
         eq(
-          users.email,
-          input.email,
+          users.id,
+          input.id,
         )
       );
 
@@ -27,17 +27,12 @@ export const userRouter = createTRPCRouter({
     }),
 
   create: protectedProcedure
-    .input(z.object({ email: z.string() }))
+    .input(z.object({ email: z.string().optional() }))
     .mutation(async ({ input, ctx }) => {
-      const customer = await ctx.stripe.customers.create({
-        email: input.email,
-      });
-
       const [user] = await ctx.db
         .insert(users)
         .values({ 
           email: input.email,
-          customerId: customer.id,
         })
         .returning();
 
@@ -49,6 +44,7 @@ export const userRouter = createTRPCRouter({
       id: z.number(),
       fullName: z.string().optional(),
       phone: z.string().optional(),
+      email: z.string().optional().nullable(),
       checkInTime: z.string().optional(),
       completedUserOnboarding: z.boolean().optional(),
     }))
@@ -65,6 +61,7 @@ export const userRouter = createTRPCRouter({
           )
         )
         .returning()
+      console.log("user: ", user)
 
       return user;
     }),
