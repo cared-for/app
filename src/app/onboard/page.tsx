@@ -3,11 +3,8 @@ import { redirect } from 'next/navigation'
 
 import { createClient } from '~/lib/supabase/server'
 
-import { api } from '~/trpc/server'
-
-import { StepOne } from "./stepOne"
-import { StepTwo } from "./stepTwo"
-import { StepThree } from "./stepThree"
+import { UserOnboarding } from './_userOnboarding'
+import { DependentOnboarding } from './_dependentOnboarding'
 
 export default async function Onboard() {
   const cookieStore = cookies()
@@ -18,11 +15,11 @@ export default async function Onboard() {
     redirect('/')
   }
 
-  const user = await api.user.get.query({ email: data.user.email! }, { })
-  
-  if (user.completedUserOnboarding) redirect('/dashboard')
-  if (!user.fullName || !user.phone) return <StepOne {...user} />
-  if (!user.scheduleId) return <StepTwo {...user} />
+  const metadata = data.user.metadata
 
-  return <StepThree {...user} />
+  if (metadata.isDependent) {
+    return <DependentOnboarding dependentId={metadata.dependentId} userId={metadata.userId} />
+  }
+
+  return <UserOnboarding userId={metadata.userId} />
 }

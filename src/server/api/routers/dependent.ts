@@ -11,6 +11,7 @@ export const dependentRouter = createTRPCRouter({
       dependents: z.array(
         z.object({
           fullName: z.string(),
+          email: z.string(),
           phone: z.string(),
         })),
       userId: z.number(),
@@ -38,8 +39,9 @@ export const dependentRouter = createTRPCRouter({
 
   create: protectedProcedure
     .input(z.object({
-      fullName: z.string(),
-      phone: z.string(),
+      fullName: z.string().optional(),
+      phone: z.string().optional(),
+      email: z.string(),
       userId: z.number(),
     }))
     .mutation(async ({ ctx, input }) => {
@@ -48,6 +50,26 @@ export const dependentRouter = createTRPCRouter({
 
         return "success";
       } catch(error: any) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: error.message,
+        });
+      }
+    }),
+
+  get: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ input, ctx }) => {
+      try {
+        const [dependents] = await ctx.db.select().from(table.dependents).where(
+          eq(
+            table.dependents.id,
+            input.id,
+          )
+        );
+
+        return dependents;
+      } catch (error: any) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: error.message,
@@ -82,6 +104,7 @@ export const dependentRouter = createTRPCRouter({
           id: z.number(),
           fullName: z.string().optional(),
           phone: z.string().optional(),
+          email: z.string().optional(),
         }))
     }))
     .mutation(async ({ ctx, input }) => {
@@ -100,15 +123,24 @@ export const dependentRouter = createTRPCRouter({
 
           return acc;
         }, "(CASE")
+        const emailUpdate = input.depdendents.reduce((acc, dependent) => {
+          if (dependent.phone) {
+            return `${acc} WHEN id = ${dependent.id} THEN '+1${dependent.email}'`
+          }
+
+          return acc;
+        }, "(CASE")
 
         const fullNameSql = sql.raw(`${fullNameUpdate} END)`)
         const phoneSql = sql.raw(`${phoneUpdate} END)`)
+        const emailSql = sql.raw(`${emailUpdate} END)`)
 
         await ctx.db
           .update(table.dependents)
           .set({
             fullName: fullNameSql,
             phone: phoneSql,
+            email: emailSql,
           })
           .where(
             inArray(
@@ -130,6 +162,7 @@ export const dependentRouter = createTRPCRouter({
       id: z.number(),
       fullName: z.string().optional(),
       phone: z.string().optional(),
+      email: z.string().optional(),
     }))
     .mutation(async ({ ctx, input }) => {
       try {
