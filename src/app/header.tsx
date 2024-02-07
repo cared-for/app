@@ -13,10 +13,10 @@ export default function Header() {
           Testimonials
         </Link>
         */}
-        <Link href="/login" className="text-gray-700 hover:text-[#006a4e] text-sm lg:text-base" >
+        <Link href="/login" className="text-gray-700 hover:text-[#006a4e] text-base lg:text-xl" >
           Login
         </Link>
-        <Link href="/signup" className="text-gray-700 hover:text-[#006a4e] text-sm lg:text-base" >
+        <Link href="/signup" className="text-gray-700 hover:text-[#006a4e] text-base lg:text-xl" >
           Get Started
         </Link>
       </nav>

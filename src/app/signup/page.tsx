@@ -14,6 +14,7 @@ import { signup } from "./actions"
 import { Label } from "~/components/ui/label"
 import { Input } from "~/components/ui/input"
 import { SubmitButton } from "~/components/ui/submitButton"
+import { Checkbox } from "~/components/ui/checkbox"
 
 const initialState = {
   status: "",
@@ -35,20 +36,28 @@ export default function Signup() {
             </h2>
             <div className="flex flex-col items-center mt-8">
               <form className="w-full max-w-md space-y-4" action={formAction}>
+                <div className="flex items-center space-x-3">
+                  <Checkbox id="isDependent" name="isDependent" className="data-[state=checked]:bg-[#006a4e] data-[state=checked]:text-[#e0f0e9] border-[#006a4e] ring-[#006a4e]"/>
+                  <Label htmlFor="isDependent" className="text-base text-[#006a4e]">Are you a care taker?</Label>
+                </div>
+
                 <div className="space-y-1">
-                  <Label htmlFor="email" className="text-base">Email</Label>
+                  <Label htmlFor="email" className="text-base text-[#006a4e]">Email</Label>
                   <Input id="email" required type="email" name="email"/>
                 </div>
+
                 <div className="space-y-1">
-                  <Label htmlFor="password" className="text-base">Password</Label>
+                  <Label htmlFor="password" className="text-base text-[#006a4e]">Password</Label>
                   <Input id="password" required type="password" name="password"/>
                 </div>
+
                 <SubmitButton className="w-full bg-[#006a4e] text-white hover:bg-[#00563f]" type="submit">
                   Sign Up
                 </SubmitButton>
                 {state.status === "ERROR" && (
                   <p className="text-red-500 text-center">{state.message}</p>
                 )}
+
                 <div className="flex justify-between items-center mt-4">
                   <Link className="text-[#006a4e] hover:underline" href="/login">
                     Already have an account?

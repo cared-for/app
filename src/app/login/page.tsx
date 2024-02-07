@@ -37,12 +37,12 @@ export default function Login() {
             <div className="flex flex-col items-center mt-8">
               <form className="w-full max-w-md space-y-4" action={formAction}>
                 <div className="space-y-1">
-                  <Label className="text-base" htmlFor="email">Email</Label>
+                  <Label className="text-base text-[#006a4e]" htmlFor="email">Email</Label>
                   <Input id="email" name="email" required type="email" />
                 </div>
                 <div className="space-y-1">
                   <div className="flex justify-between">
-                    <Label htmlFor="password" className="text-base">Password</Label>
+                    <Label htmlFor="password" className="text-base text-[#006a4e]">Password</Label>
 
                     <Link className="text-[#006a4e] hover:underline" href="#">
                       Forgot your password?
