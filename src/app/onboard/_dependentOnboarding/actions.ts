@@ -36,14 +36,22 @@ export const stepThreeSubmit = async (_: any, formData: FormData) => {
 
     return { fullName, phone, email }
   })
-  const mainDependent = dependents.pop()
+  const mainDependent = dependents.shift()
 
+  await api.dependent.update.mutate({ 
+    id: data.dependentId, fullName: 
+    mainDependent!.fullName, 
+    phone: `+1${mainDependent!.phone}` })
+  if (dependents.length > 0) {
+    await api.dependent.createMany.mutate({
+      userId: data.userId,
+      dependents: dependents.map((dependent) => ({
+        ...dependent,
+        phone: `+1${dependent.phone}`,
+      }))
+    })
+  }
   await api.user.update.mutate({ id: data.userId, completedUserOnboarding: true })
-  await api.dependent.update.mutate({ id: data.dependentId, ...mainDependent })
-  await api.dependent.createMany.mutate({
-    userId: data.userId,
-    dependents,
-  })
 
   revalidatePath("/dashboard")
   redirect("/dashboard")

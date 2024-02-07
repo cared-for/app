@@ -28,7 +28,7 @@ export function StepOne({ id }: SelectUser) {
 
         <div className="flex flex-col min-h-[400px] space-y-6 justify-between">
           <h1 className="text-4xl font-bold text-[#155724]">
-            Welcome, let&apos;s start with getting some basic information
+            Let's setup some basic information for your loved one
           </h1>
           
           <div className="flex flex-col space-y-4">
@@ -67,6 +67,7 @@ export function StepOne({ id }: SelectUser) {
               <Input
                 className="border border-[#c3e6cb] bg-slate-100"
                 id="email"
+                name="email"
                 placeholder="john.doe@example.com"
                 type="email"
               />

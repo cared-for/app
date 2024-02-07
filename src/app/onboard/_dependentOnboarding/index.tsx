@@ -6,7 +6,7 @@ import { StepTwo } from "./stepTwo"
 import { StepThree } from "./stepThree"
 
 type OnboardProps = { dependentId: number; userId: number; }
-export async function Onboard({ dependentId, userId }: OnboardProps) {
+export async function DependentOnboarding({ dependentId, userId }: OnboardProps) {
   const user = await api.user.get.query({ id: userId })
   const dependent = await api.dependent.get.query({ id: dependentId })
 

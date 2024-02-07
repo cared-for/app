@@ -19,6 +19,7 @@ export const dependentRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       try {
         const { userId, dependents } = input;
+        console.log("dependents: ", dependents)
 
         const dependentsWithUserId = dependents.map((dependent) => ({
           ...dependent,
@@ -46,9 +47,12 @@ export const dependentRouter = createTRPCRouter({
     }))
     .mutation(async ({ ctx, input }) => {
       try {
-        await ctx.db.insert(table.dependents).values(input);
+        const [dependent] = await ctx.db
+          .insert(table.dependents)
+          .values(input)
+          .returning();
 
-        return "success";
+        return dependent;
       } catch(error: any) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
@@ -124,7 +128,7 @@ export const dependentRouter = createTRPCRouter({
           return acc;
         }, "(CASE")
         const emailUpdate = input.depdendents.reduce((acc, dependent) => {
-          if (dependent.phone) {
+          if (dependent.email) {
             return `${acc} WHEN id = ${dependent.id} THEN '+1${dependent.email}'`
           }
 

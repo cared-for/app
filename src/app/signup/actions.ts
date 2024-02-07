@@ -19,6 +19,7 @@ export async function signup(_: any, formData: FormData) {
     password: formData.get('password') as string,
   }
   const isDependent = formData.get('isDependent') === 'on'
+  console.log("is dependent: ", formData.get('isDependent'))
 
   const { error } = await supabase.auth.signUp(data)
   

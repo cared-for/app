@@ -15,11 +15,8 @@ export default async function Onboard() {
     redirect('/')
   }
 
-  const metadata = data.user.metadata
+  const metadata = data.user.user_metadata
 
-  if (metadata.isDependent) {
-    return <DependentOnboarding dependentId={metadata.dependentId} userId={metadata.userId} />
-  }
-
+  if (metadata.isDependent) return <DependentOnboarding dependentId={metadata.dependentId} userId={metadata.userId} /> 
   return <UserOnboarding userId={metadata.userId} />
 }

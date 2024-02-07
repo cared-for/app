@@ -75,6 +75,19 @@ export function StepThree({ id }: SelectUser) {
                     required
                   />
                 </div>
+
+                <div className="flex flex-col gap-y-1">
+                  <label className="block text-lg font-medium text-[#155724]" htmlFor={`email-${i}`}>
+                    Email
+                  </label>
+                  <Input
+                    className="border border-[#c3e6cb] bg-white"
+                    id={`email-${i}`}
+                    name={`email-${i}`}
+                    placeholder="johndoe@gmail.conm"
+                    required
+                  />
+                </div>
                 
                 <div className="flex flex-col gap-y-1">
                   <label className="block text-lg font-medium text-[#155724]" htmlFor={`phone-${i}`}>

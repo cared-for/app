@@ -23,6 +23,11 @@ export function StepThree({ id, email, userId }: SelectDependents & { userId: nu
   const [state, formAction] = useFormState(stepThreeSubmit, initialState)
   const [members, setMembers] = useState<string[]>([String(id)])
 
+  const mainDependentEmailProps = {
+    value: email!,
+    disabled: true,
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-[#e0f0e9] items-center justify-center p-4 lg:p-32">
       <h1 className="absolute top-4 left-6 text-4xl font-bold text-[#006a4e]">CaredFor</h1>
@@ -84,9 +89,8 @@ export function StepThree({ id, email, userId }: SelectDependents & { userId: nu
                     className="border border-[#c3e6cb] bg-white"
                     id={`email-${i}`}
                     name={`email-${i}`}
-                    value={i === 0 ? email! : undefined}
-                    disabled={i === 0}
                     required
+                    {...(i === 0 ? mainDependentEmailProps : {})}
                   />
                 </div>
                 
