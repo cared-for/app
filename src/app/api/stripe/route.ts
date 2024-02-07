@@ -1,39 +1,44 @@
-import { eq } from "drizzle-orm";
-import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
-import Stripe from "stripe"
-import { env } from "~/env"
-import { db } from "~/server/db";
-import { users } from "~/server/db/schema";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { env } from "process";
+import { stripeCustomers } from "~/server/db/schema";
 
-const stripe = new Stripe(env.STRIPE_SECRET_KEY);
+export const stripeRouter = createTRPCRouter({
+  createCheckoutSession: protectedProcedure
+    .input(z.object({ customerId: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      return ctx.stripe.checkout.sessions.create({
+        line_items: [
+          {
+            // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+            price: 'price_1OgMkSL1WksQvxZXBcOGWKZo',
+            quantity: 1,
+          },
+        ],
+        mode: 'payment',
+        success_url: `${env.HOST}/dashboard`,
+        cancel_url: `${env.HOST}/dashboard`,
+        // automatic_tax: {enabled: true},
+        customer: input.customerId,
+      });
+    }),
 
-export async function POST(request: NextRequest) {
-  const payload = await request.text()
-  const sig = request.headers.get('Stripe-Signature')
+  createCustomer: protectedProcedure
+    .input(z.object({ email: z.string(), relationalId: z.number() }))
+    .mutation(async ({ input, ctx }) => {
+      const customer = await ctx.stripe.customers.create({
+        email: input.email,
+      });
 
-  if (!sig) {
-    return NextResponse.error()
-  }
+      await ctx.db
+        .insert(stripeCustomers)
+        .values({
+          customerId: customer.id,
+          relationalId: input.relationalId,
+        });
 
-  try {
-    const event = stripe.webhooks.constructEvent(payload, sig, env.STRIPE_WEBHOOK_SECRET)
+      return customer;
+    }),
+})
 
-    if (event.type === 'checkout.session.completed') {
-      const session = event.data.object
-      const customerId = session.customer
-      
-      if (!customerId) throw new Error('No customer ID')
-
-      await db.update(users).set({ onFreeTrial: false }).where(
-        eq(users.customerId, customerId as string)
-      )
-
-      console.log("payment successfully recorded")
-    }
-  } catch (err) {
-    return NextResponse.error()
-  }
-
-  return NextResponse.json({}, { status: 200 })
-}

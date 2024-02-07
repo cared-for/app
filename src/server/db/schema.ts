@@ -44,7 +44,7 @@ export const users = createTable('users', {
   // onboarding info
   completedUserOnboarding: boolean('completed_user_onboarding').default(false),
 }, (users) => ({
-  emailIndex: uniqueIndex('email_idx').on(users.email)
+  emailIndex: uniqueIndex('users_email_idx').on(users.email)
 }))
 
 export const usersRelations = relations(users, ({ many }) => ({
@@ -60,7 +60,9 @@ export const dependents = createTable('dependents', {
   phone: varchar('phone', { length: 256 }),
   email: varchar('email', { length: 256 }),
   userId: integer('user_id').references(() => users.id),
-});
+}, (dependents) => ({
+  emailIndex: uniqueIndex('dependents_email_idx').on(dependents.email)
+}))
 
 export const dependentRelations = relations(dependents, ({ one }) => ({
   users: one(users, {
@@ -78,7 +80,10 @@ export const stripeCustomers = createTable('stripe_customers', {
   id: serial('id').primaryKey().notNull(),
   customerId: varchar('customer_id', { length: 256 }).notNull(),
   relationalId: integer('relational_id').notNull(),
-})
+}, (stripeCustomers) => ({
+  customerIdIndex: uniqueIndex('customer_id_idx').on(stripeCustomers.customerId),
+  relationalIdIndex: uniqueIndex('relational_id_idx').on(stripeCustomers.relationalId),
+}))
 
 export const stripeCustomerRelations = relations(stripeCustomers, ({ one }) => ({
   users: one(users, {
