@@ -6,8 +6,6 @@ import { redirect } from 'next/navigation'
 
 import { createClient } from '~/lib/supabase/actions'
 
-import { api } from '~/trpc/server'
-
 export async function signup(_: any, formData: FormData) {
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
@@ -19,18 +17,11 @@ export async function signup(_: any, formData: FormData) {
     password: formData.get('password') as string,
   }
 
-  const { error, data: authData } = await supabase.auth.signUp(data)
+  const { error } = await supabase.auth.signUp(data)
   
   if (error) {
     return { status: "ERROR", message: error.message }
   }
-  
-  await api.stripe.createCustomer.mutate({ 
-    email: data.email,
-    authId: authData.user!.id,
-  })
-
-  console.log("stripe customer created")
 
   revalidatePath('/onboard', 'layout')
   redirect('/onboard')

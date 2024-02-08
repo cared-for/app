@@ -40,7 +40,7 @@ export const users = createTable('users', {
   // payment info
   onFreeTrial: boolean('on_free_trial').default(true),
   freeTrialStart: timestamp('free_trial_start', { withTimezone: false }).defaultNow(),
-  customerId: varchar('customer_id', { length: 256 }),
+  customerId: varchar('customer_id', { length: 256 }).notNull(),
 
   // onboarding info
   completedUserOnboarding: boolean('completed_user_onboarding').default(false),

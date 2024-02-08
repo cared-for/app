@@ -32,7 +32,6 @@ export function StepOne({ email }: { email: string }) {
       setStatus("LOADING");
       const form = e.target as HTMLFormElement
       const formData = new FormData(form)
-      console.log("form data email: ", formData.get("email") as string)
       const data = {
         fullName: formData.get('fullName') as string,
         phone: `+1${formData.get('phone') as string}`,
@@ -40,7 +39,10 @@ export function StepOne({ email }: { email: string }) {
       }
 
       let dependentId: number | undefined;
-      const newUser = await createUser.mutateAsync(data)
+      const newUser = await createUser.mutateAsync({
+        ...data,
+        authEmail: email,
+      })
       if (!isUser) {
         const newDependent = await createDependent.mutateAsync({
           userId: newUser!.id,
