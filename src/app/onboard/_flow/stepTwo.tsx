@@ -6,7 +6,6 @@
  */
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { revalidatePath } from "next/cache"
 import { api } from "~/trpc/react"
 
 // components
@@ -51,13 +50,14 @@ export function StepTwo({ id }: SelectUser) {
       
       <form className="max-w-4xl w-full grid grid-cols-2 gap-8" onSubmit={handleSubmit} >
         <div className="flex flex-col space-y-6 min-h-[400px] justify-between">
+
           <div className="gap-y-2">
             <h1 className="text-4xl font-bold text-[#155724]">
               Let&apos;s setup a check in time that works best
             </h1>
 
             <p className="text-md text-[#155724] opacity-50">
-              A phone call will be made to your loved one's phone at the check-in time you
+              A phone call will be made to your phone at the check-in time you
               have set. If a check-in is missed, another call will be made again
               in 15 minutes
             </p>

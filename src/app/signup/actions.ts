@@ -30,6 +30,8 @@ export async function signup(_: any, formData: FormData) {
     authId: authData.user!.id,
   })
 
+  console.log("stripe customer created")
+
   revalidatePath('/onboard', 'layout')
   redirect('/onboard')
 }

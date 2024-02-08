@@ -37,7 +37,7 @@ export const stripeRouter = createTRPCRouter({
         .insert(stripeCustomers)
         .values({ 
           customerId: customer.id,
-          relationalId: input.authId,
+          authId: input.authId,
         })
         .returning();
 

@@ -20,7 +20,7 @@ import { Spinner } from "~/components/ui/spinner"
 export function StepOne({ email }: { email: string }) {
   const router = useRouter()
   const [status, setStatus] = useState<"IDLE" | "LOADING" | "SUCCESS" | "ERROR">("IDLE")
-  const [isDependent, setIsDepdenent] = useState<boolean>(false)
+  const [isUser, setIsUser] = useState<boolean>(false)
   const createUser = api.user.create.useMutation()
   const createDependent = api.dependent.create.useMutation()
   const updateUserAuth = api.user.updateAuth.useMutation()
@@ -32,15 +32,16 @@ export function StepOne({ email }: { email: string }) {
       setStatus("LOADING");
       const form = e.target as HTMLFormElement
       const formData = new FormData(form)
+      console.log("form data email: ", formData.get("email") as string)
       const data = {
         fullName: formData.get('fullName') as string,
         phone: `+1${formData.get('phone') as string}`,
-        email: isDependent ? formData.get('email') as string : email!,
+        email: isUser ? email : formData.get('email') as string,
       }
 
       let dependentId: number | undefined;
       const newUser = await createUser.mutateAsync(data)
-      if (isDependent) {
+      if (!isUser) {
         const newDependent = await createDependent.mutateAsync({
           userId: newUser!.id,
           email: email,
@@ -51,7 +52,7 @@ export function StepOne({ email }: { email: string }) {
       await updateUserAuth.mutateAsync({
         userId: newUser!.id,
         dependentId,
-        isDependent,
+        isDependent: !isUser,
       })
 
       router.refresh()
@@ -71,23 +72,25 @@ export function StepOne({ email }: { email: string }) {
 
           <div className="gap-y-2">
             <h1 className="text-4xl font-bold text-[#155724]">
-              Welcome, let's start with getting some basic information
+              Welcome, let's start with some basic information
             </h1>
 
             <p className="text-md text-[#155724] opacity-50">
-              This information will be for the one recieving the check-in calls
+              Please fill in the information for the one who will be recieving the check-in calls
             </p>
           </div>
           
           <div className="flex flex-col space-y-4">
             <div className="flex items-center space-x-3">
               <Checkbox 
-                id="isDependent"
-                name="isDependent"
-                onChange={e => setIsDepdenent((e.target as HTMLInputElement).checked)}
+                id="isUser"
+                name="isUser"
+                onClick={() => setIsUser(prev => !prev)}
                 className="data-[state=checked]:bg-[#006a4e] data-[state=checked]:text-[#e0f0e9] border-[#006a4e] ring-[#006a4e]"
               />
-              <Label htmlFor="isDependent" className="text-base text-[#006a4e]">Are you a care taker?</Label>
+              <Label htmlFor="isUser" className="text-base text-[#006a4e]">
+                Will you be the one recieving the check-in calls?
+              </Label>
             </div>
  
             <div className="flex flex-col gap-y-1">
@@ -123,11 +126,13 @@ export function StepOne({ email }: { email: string }) {
                 Email
               </label>
               <Input
-                className="border border-[#c3e6cb] bg-slate-100"
+                // className={`border border-[#c3e6cb] ${isUser ? 'bg-gray-100 opacity-50' : 'bg-white'}`}
+                className={`border border-[#c3e6cb] bg-white`}
                 id="email"
                 placeholder="john.doe@example.com"
-                disabled={!isDependent}
-                value={!isDependent ? email : undefined}
+                name="email"
+                disabled={isUser}
+                defaultValue={isUser ? email : undefined}
                 type="email"
               />
             </div>
