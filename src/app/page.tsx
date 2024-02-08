@@ -13,7 +13,7 @@ import GetStarted from "./getStarted"
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-[#e0f0e9]">
-      <main className="flex flex-col flex-1 gap-24 lg:gap-36">
+      <main className="flex flex-col flex-1 gap-28 lg:gap-36">
         <Header />
         <Hero />
         <HowItWorks />
