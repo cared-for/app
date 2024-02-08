@@ -79,20 +79,9 @@ export type InsertDependents = InferInsertModel<typeof dependents>;
 export const stripeCustomers = createTable('stripe_customers', {
   id: serial('id').primaryKey().notNull(),
   customerId: varchar('customer_id', { length: 256 }).notNull(),
-  relationalId: integer('relational_id').notNull(),
+  relationalId: varchar('relational_id', { length: 256 }).notNull(),
 }, (stripeCustomers) => ({
   customerIdIndex: uniqueIndex('customer_id_idx').on(stripeCustomers.customerId),
   relationalIdIndex: uniqueIndex('relational_id_idx').on(stripeCustomers.relationalId),
-}))
-
-export const stripeCustomerRelations = relations(stripeCustomers, ({ one }) => ({
-  users: one(users, {
-    fields: [stripeCustomers.relationalId],
-    references: [users.id],
-  }),
-  dependents: one(dependents, {
-    fields: [stripeCustomers.relationalId],
-    references: [dependents.id],
-  })
 }))
 

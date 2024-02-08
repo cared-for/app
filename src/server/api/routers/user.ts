@@ -6,6 +6,14 @@ import { users } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
 
 export const userRouter = createTRPCRouter({
+  updateAuth: protectedProcedure
+    .input(z.object({ userId: z.number(), dependentId: z.number().optional(), isDependent: z.boolean() }))
+    .mutation(async ({ input, ctx }) => {
+      return ctx.supabase.auth.updateUser({
+        data: input
+      })
+    }),
+
   get: protectedProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ input, ctx }) => {

@@ -25,7 +25,7 @@ export const stripeRouter = createTRPCRouter({
     }),
 
   createCustomer: protectedProcedure
-    .input(z.object({ email: z.string(), relationalId: z.number() }))
+    .input(z.object({ email: z.string(), authId: z.string() }))
     .mutation(async ({ input, ctx }) => {
       const customer = await ctx.stripe.customers.create({
         email: input.email,
@@ -35,7 +35,7 @@ export const stripeRouter = createTRPCRouter({
         .insert(stripeCustomers)
         .values({
           customerId: customer.id,
-          relationalId: input.relationalId,
+          relationalId: input.authId,
         });
 
       return customer;
