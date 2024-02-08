@@ -3,25 +3,7 @@
 import { redirect } from "next/navigation"
 import { api } from "~/trpc/server"
 import { revalidatePath } from "next/cache"
-  
-export const stepOneSubmit = async (_: any, formData: FormData) => {
-  try {
-    const data = {
-      id: Number(formData.get('id')),
-      fullName: formData.get('fullName') as string,
-      phone: `+1${formData.get('phone') as string}`,
-      email: formData.get('email') as string,
-    }
-
-    await api.user.update.mutate(data)
-
-    revalidatePath("/onboard")
-    redirect("/onboard")
-  } catch (error: any) {
-    return { status: "ERROR", message: error.message }
-  }
-}
-  
+ 
 export const stepThreeSubmit = async (_: any, formData: FormData) => {
   const data = {
     userId: Number(formData.get('userId')),

@@ -27,9 +27,9 @@ export const users = createTable('users', {
   id: serial('id').primaryKey(),
 
   // basic info
-  fullName: text('full_name'),
-  phone: varchar('phone', { length: 256 }),
-  email: varchar('email', { length: 256 }),
+  fullName: text('full_name').notNull(),
+  phone: varchar('phone', { length: 256 }).notNull(),
+  email: varchar('email', { length: 256 }).notNull(),
   
   // check-in info
   checkedIn: boolean('checked_in').default(false),
@@ -79,20 +79,9 @@ export type InsertDependents = InferInsertModel<typeof dependents>;
 export const stripeCustomers = createTable('stripe_customers', {
   id: serial('id').primaryKey().notNull(),
   customerId: varchar('customer_id', { length: 256 }).notNull(),
-  relationalId: integer('relational_id').notNull(),
+  authId: varchar('auth_id', { length: 256 }).notNull(),
 }, (stripeCustomers) => ({
   customerIdIndex: uniqueIndex('customer_id_idx').on(stripeCustomers.customerId),
-  relationalIdIndex: uniqueIndex('relational_id_idx').on(stripeCustomers.relationalId),
-}))
-
-export const stripeCustomerRelations = relations(stripeCustomers, ({ one }) => ({
-  users: one(users, {
-    fields: [stripeCustomers.relationalId],
-    references: [users.id],
-  }),
-  dependents: one(dependents, {
-    fields: [stripeCustomers.relationalId],
-    references: [dependents.id],
-  })
+  authIdIndex: uniqueIndex('auth_id').on(stripeCustomers.authId),
 }))
 

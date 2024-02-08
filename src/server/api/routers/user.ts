@@ -6,6 +6,14 @@ import { users } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
 
 export const userRouter = createTRPCRouter({
+  updateAuth: protectedProcedure
+    .input(z.object({ userId: z.number(), dependentId: z.number().optional(), isDependent: z.boolean() }))
+    .mutation(async ({ input, ctx }) => {
+      return ctx.supabase.auth.updateUser({
+        data: input
+      })
+    }),
+
   get: protectedProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ input, ctx }) => {
@@ -27,13 +35,15 @@ export const userRouter = createTRPCRouter({
     }),
 
   create: protectedProcedure
-    .input(z.object({ email: z.string().optional() }))
+    .input(z.object({
+      fullName: z.string(),
+      email: z.string(),
+      phone: z.string(),
+    }))
     .mutation(async ({ input, ctx }) => {
       const [user] = await ctx.db
         .insert(users)
-        .values({ 
-          email: input.email,
-        })
+        .values(input)
         .returning();
 
       return user;
