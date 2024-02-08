@@ -39,11 +39,19 @@ export const userRouter = createTRPCRouter({
       fullName: z.string(),
       email: z.string(),
       phone: z.string(),
+      authEmail: z.string(),
     }))
     .mutation(async ({ input, ctx }) => {
+      const customer = await ctx.stripe.customers.create({
+        email: input.authEmail,
+      });
+
       const [user] = await ctx.db
         .insert(users)
-        .values(input)
+        .values({
+          ...input,
+          customerId: customer.id,
+        })
         .returning();
 
       return user;

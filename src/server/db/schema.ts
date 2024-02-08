@@ -40,6 +40,7 @@ export const users = createTable('users', {
   // payment info
   onFreeTrial: boolean('on_free_trial').default(true),
   freeTrialStart: timestamp('free_trial_start', { withTimezone: false }).defaultNow(),
+  customerId: varchar('customer_id', { length: 256 }),
 
   // onboarding info
   completedUserOnboarding: boolean('completed_user_onboarding').default(false),
@@ -73,15 +74,3 @@ export const dependentRelations = relations(dependents, ({ one }) => ({
 
 export type SelectDependents = InferSelectModel<typeof dependents>;
 export type InsertDependents = InferInsertModel<typeof dependents>;
-
-// relationalId can either be a user id or a dependent id
-// this is used to associate a stripe customer with a user or dependent
-export const stripeCustomers = createTable('stripe_customers', {
-  id: serial('id').primaryKey().notNull(),
-  customerId: varchar('customer_id', { length: 256 }).notNull(),
-  authId: varchar('auth_id', { length: 256 }).notNull(),
-}, (stripeCustomers) => ({
-  customerIdIndex: uniqueIndex('customer_id_idx').on(stripeCustomers.customerId),
-  authIdIndex: uniqueIndex('auth_id').on(stripeCustomers.authId),
-}))
-
