@@ -7,6 +7,7 @@
 
 import { useState } from "react"
 import { useFormState } from "react-dom"
+import { useSearchParams } from "next/navigation"
 
 // components
 import { Input } from "~/components/ui/input"
@@ -20,9 +21,11 @@ const initialState = {
   status: "",
   message: "",
 }
-export function StepThree({ id }: SelectUser) {
+export function StepThree({ id, customerId }: SelectUser) {
   const [state, formAction] = useFormState(stepThreeSubmit, initialState)
   const [members, setMembers] = useState<string[]>(initialMemberState)
+  const searchParams = useSearchParams()
+  const price = searchParams.get("price")
 
   return (
     <div className="flex flex-col min-h-screen bg-[#e0f0e9] items-center justify-center p-4 lg:p-32">
@@ -30,7 +33,9 @@ export function StepThree({ id }: SelectUser) {
       
       <form className="max-w-4xl w-full grid grid-cols-2 gap-8" action={formAction} >
         <input name="userId" type="hidden" value={id} />
+        <input name="customerId" type="hidden" value={customerId} />
         <input name="length" type="hidden" value={members.length} />
+        <input name="price" type="hidden" value={price ?? ""} />
 
         <div className="flex flex-col min-h-[400px] space-y-6 justify-between">
           <div className="gap-y-2">

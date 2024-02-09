@@ -3,16 +3,18 @@
 import { redirect } from "next/navigation"
 import { api } from "~/trpc/server"
 import { revalidatePath } from "next/cache"
- 
+
 export const stepThreeSubmit = async (_: any, formData: FormData) => {
   const data = {
-    userId: Number(formData.get('userId')),
-    length: Number(formData.get('length')),
+    userId: Number(formData.get('userId') as string),
+    customerId: formData.get('customerId') as string,
+    length: Number(formData.get('length') as string),
   }
+  const price = formData.get('price') as string
   
   const dependents = [...Array(data.length).keys()].map((i) => {
     const fullName = formData.get(`fullName-${i}`) as string
-    const phone = formData.get(`phone-${i}`) as string
+    const phone = `+1${formData.get(`phone-${i}`) as string}`
     const email = formData.get(`email-${i}`) as string
 
     return { fullName, phone, email }
@@ -23,6 +25,15 @@ export const stepThreeSubmit = async (_: any, formData: FormData) => {
     dependents,
   })
   await api.user.update.mutate({ id: data.userId, completedUserOnboarding: true })
+
+  if (price !== "") {
+    const checkoutSession = await api.stripe.createCheckoutSession.mutate({
+      customerId: data.customerId,
+      price: price === "standard" ? "STANDARD" : "LIFETIME",
+    })
+
+    redirect(checkoutSession.url!)
+  }
 
   revalidatePath("/dashboard")
   redirect("/dashboard")

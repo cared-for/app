@@ -5,6 +5,7 @@
  * @see https://v0.dev/t/dGBYb8nfMRQ
  */
 import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { useFormState } from "react-dom"
 
 // server actions
@@ -21,6 +22,8 @@ const initialState = {
 }
 export default function Signup() {
   const [state, formAction] = useFormState(signup, initialState)
+  const searchParams = useSearchParams()
+  const price = searchParams.get("price")
 
   return (
     <div className="flex flex-col min-h-screen bg-[#e0f0e9]">
@@ -35,6 +38,7 @@ export default function Signup() {
             </h2>
             <div className="flex flex-col items-center mt-8">
               <form className="w-full max-w-md space-y-4" action={formAction}>
+                <input name="price" type="hidden" value={price ?? ""} />
                 <div className="space-y-1">
                   <Label htmlFor="email" className="text-base text-[#006a4e]">Email</Label>
                   <Input id="email" required type="email" name="email"/>

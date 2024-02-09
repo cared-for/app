@@ -7,12 +7,15 @@ export default function Hero() {
         <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
           <div className="flex flex-col justify-center space-y-6">
             <div className="space-y-6">
-            {/*
-              <h1 className="text-4xl font-bold tracking-tighter text-white sm:text-5xl xl:text-6xl/none">
-                Worried about your loved ones living alone? <span className="text-[#006a4e]">Call them!</span>
+              <h1 className="text-4xl font-bold tracking-tighter text-[#006a4e] sm:text-5xl xl:text-6xl/none">
+                {/*Worried about your loved ones living alone? <span className="text-[#00946C]">Call them!</span>*/}
+                Worried about your loved ones living alone? <span className="text-[#67CCA0]">Call them!</span>
               </h1>
-            */}
+              <p className="max-w-[600px] text-center lg:text-left text-gray-500 text-lg md:text-xl dark:text-gray-400">
+                CaredFor is a simple check-in system that calls your loved ones once a day to ensure they are safe and connected.
+              </p>
 
+            {/*
               <h1 className="text-6xl text-center lg:text-left font-bold tracking-tighter text-[#006a4e] sm:text-7xl xl:text-8xl/none">
                 Call your Mom.
               </h1>
@@ -20,6 +23,7 @@ export default function Hero() {
                 Can't? Next best thing you can do is get them Cared for, a simple check-in system that calls your loved ones once a day to ensure they are safe and
                 connected.
               </p>
+            */}
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center lg:justify-start">
               <Link

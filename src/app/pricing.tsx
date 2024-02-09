@@ -45,11 +45,11 @@ export default function Pricing() {
             </div>
          </div>
 
-          <Button size="lg" className="bg-[#006a4e] text-xl text-white hover:bg-[#00563f]" type="submit">
-            <Link href="/signup">
+        <Link href="/signup?price=standard" className="w-full">
+          <Button size="lg" className="w-full bg-[#006a4e] text-xl text-white hover:bg-[#00563f]" type="submit">
               Get Started
-            </Link>
           </Button>
+        </Link>
         </div>
 
         <div className="flex flex-col p-6 rounded-2xl bg-[#F1F8F5] gap-y-6">
@@ -78,7 +78,7 @@ export default function Pricing() {
          </div>
 
           <Button size="lg" className="bg-[#006a4e] text-xl text-white hover:bg-[#00563f] mt-auto" type="submit">
-            <Link href="/signup">
+            <Link href="/signup?price=lifetime" className="w-full">
               Get Started
             </Link>
           </Button>

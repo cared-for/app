@@ -16,6 +16,7 @@ export async function signup(_: any, formData: FormData) {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
   }
+  const price = formData.get('price') as string
 
   const { error } = await supabase.auth.signUp(data)
   
@@ -23,6 +24,8 @@ export async function signup(_: any, formData: FormData) {
     return { status: "ERROR", message: error.message }
   }
 
+  const redirectPath = price !== "" ? `/onboard?price=${price}` : '/onboard'
+
   revalidatePath('/onboard', 'layout')
-  redirect('/onboard')
+  redirect(redirectPath)
 }

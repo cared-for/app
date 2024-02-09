@@ -27,6 +27,6 @@ export default async function Onboard() {
 
   if (!user) return <StepOne email={data.user.email!}/>
   if (!user.scheduleId || !user.checkInTime) return <StepTwo {...user} />
-  if (metadata.isDependent) return <DependentStepThree {...dependent!} userId={user.id} />
+  if (metadata.isDependent) return <DependentStepThree {...dependent!} userId={user.id} customerId={user.customerId} />
   return <UserStepThree {...user} />
 }
