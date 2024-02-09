@@ -38,7 +38,6 @@ export async function POST(request: NextRequest) {
       console.log("payment successfully recorded")
     }
     if (event.type === 'customer.subscription.deleted') {
-      console.log("event: ", JSON.stringify(event, null, 2))
       const subscription = event.data.object
       const customerId = subscription.customer
 

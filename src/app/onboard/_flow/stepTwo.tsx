@@ -48,7 +48,7 @@ export function StepTwo({ id }: SelectUser) {
     <div className="flex flex-col min-h-screen bg-[#e0f0e9] items-center justify-center p-4">
       <h1 className="absolute top-4 left-6 text-4xl font-bold text-[#006a4e]">CaredFor</h1>
       
-      <form className="max-w-4xl w-full grid grid-cols-2 gap-8" onSubmit={handleSubmit} >
+      <form className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 p-6" onSubmit={handleSubmit} >
         <div className="flex flex-col space-y-6 min-h-[400px] justify-between">
 
           <div className="gap-y-2">
@@ -92,11 +92,12 @@ export function StepTwo({ id }: SelectUser) {
           </Button>
 
         </div>
-
-        <div className="space-y-6">
+        
+        <div className="space-y-6 hidden lg:block">
           <div className="p-6 border border-[#c3e6cb] bg-white rounded-md dark:border-slate-800">
             <p className="text-lg text-[#155724]">
-              Some facts about seniors living alone and feeling a uneasiness of their health and safety
+              More than 80% of users have come to love Cared For with many
+              of them even looking forward to the calls!
             </p>
           </div>
         </div>

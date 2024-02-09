@@ -67,7 +67,7 @@ export function StepOne({ email }: { email: string }) {
     <div className="flex flex-col min-h-screen bg-[#e0f0e9] items-center justify-center p-4">
       <h1 className="absolute top-4 left-6 text-4xl font-bold text-[#006a4e]">CaredFor</h1>
       
-      <form className="max-w-4xl w-full grid grid-cols-2 gap-8" onSubmit={handleSubmit} >
+      <form className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 p-6" onSubmit={handleSubmit} >
         <div className="flex flex-col min-h-[400px] space-y-6 justify-between">
           <h1 className="text-4xl font-bold text-[#155724]">
           </h1>
@@ -150,11 +150,22 @@ export function StepOne({ email }: { email: string }) {
             {status === "LOADING" && <Spinner />}
           </Button>
         </div>
+        
 
-        <div className="space-y-6">
+        <div className="hidden lg:block space-y-6">
           <div className="p-6 border border-[#c3e6cb] bg-white rounded-md dark:border-slate-800">
             <p className="text-lg text-[#155724]">
-              Some facts about seniors living alone and feeling a uneasiness of their health and safety
+              Did you know? more than five million North Americans aged over 75 years live alone!
+
+              <br/><br/>
+
+              Many of them see independence as an essential part of their identity, but with
+              it comes an increased percentage of hardships
+
+              <br/><br/>
+              
+              With Cared For, we can help them maintain their independence while providing their loved
+              ones with peace of mind
             </p>
           </div>
         </div>

@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -9,8 +10,10 @@ import { StepOne } from './_flow/stepOne'
 import { StepTwo } from './_flow/stepTwo'
 import { StepThree as UserStepThree } from './_user/stepThree'
 import { StepThree as DependentStepThree } from './_dependent/stepThree'
+import { Skeleton } from './skeleton'
 
 export default async function Onboard() {
+
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
 
@@ -27,6 +30,13 @@ export default async function Onboard() {
 
   if (!user) return <StepOne email={data.user.email!}/>
   if (!user.scheduleId || !user.checkInTime) return <StepTwo {...user} />
-  if (metadata.isDependent) return <DependentStepThree {...dependent!} userId={user.id} customerId={user.customerId} />
-  return <UserStepThree {...user} />
+
+  return (
+    <Suspense fallback={<Skeleton />}>
+     {metadata.isDependent 
+       ? <DependentStepThree {...dependent!} userId={user.id} customerId={user.customerId} /> 
+       : <UserStepThree {...user} />
+     }
+    </Suspense>
+  )
 }

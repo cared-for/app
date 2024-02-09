@@ -8,7 +8,6 @@ export default function Hero() {
           <div className="flex flex-col justify-center space-y-6">
             <div className="space-y-6">
               <h1 className="text-4xl font-bold tracking-tighter text-[#006a4e] sm:text-5xl xl:text-6xl/none">
-                {/*Worried about your loved ones living alone? <span className="text-[#00946C]">Call them!</span>*/}
                 Worried about your loved ones living alone? <span className="text-[#67CCA0]">Call them!</span>
               </h1>
               <p className="max-w-[600px] text-center lg:text-left text-gray-500 text-lg md:text-xl dark:text-gray-400">

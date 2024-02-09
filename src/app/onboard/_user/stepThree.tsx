@@ -31,7 +31,7 @@ export function StepThree({ id, customerId }: SelectUser) {
     <div className="flex flex-col min-h-screen bg-[#e0f0e9] items-center justify-center p-4 lg:p-32">
       <h1 className="absolute top-4 left-6 text-4xl font-bold text-[#006a4e]">CaredFor</h1>
       
-      <form className="max-w-4xl w-full grid grid-cols-2 gap-8" action={formAction} >
+      <form className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 p-6" action={formAction} >
         <input name="userId" type="hidden" value={id} />
         <input name="customerId" type="hidden" value={customerId} />
         <input name="length" type="hidden" value={members.length} />
@@ -138,11 +138,19 @@ export function StepThree({ id, customerId }: SelectUser) {
             )}
           </div>
         </div>
-
-        <div className="space-y-6">
+        
+        {/*https://consensus.app/papers/health-risk-appraisal-people-people-living-alone-group-kharicha/32233f7a2ea25be5bf8e53fce33e3a6b/*/}
+        <div className="space-y-6 hidden lg:block">
           <div className="p-6 border border-[#c3e6cb] bg-white rounded-md dark:border-slate-800">
             <p className="text-lg text-[#155724]">
-              Some facts about seniors living alone and feeling a uneasiness of their health and safety
+              According to a <a className="text-[#67CCA0]" href="https://pubmed.ncbi.nlm.nih.gov/17394729/" target="_blank">cited paper</a> People
+              living alone in the later stages of their life are at a higher risk
+              of health issues
+
+              <br/><br/>
+
+              With CaredFor, you can have peace of mind knowing that the check-in is there,
+              one call at a time
             </p>
           </div>
         </div>

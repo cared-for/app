@@ -11,8 +11,3 @@ export const createCheckoutSession = async ({ price, customerId }: { price: "STA
   redirect(checkout.url!)
 }
 
-export const createBillingPortal = async (customerId: string) => {
-  const portal = await api.stripe.createBillingPortal.mutate({ customerId })
-  redirect(portal.url)
-}
-
