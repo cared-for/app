@@ -8,7 +8,6 @@ import type { SelectUser } from "~/server/db/schema"
 import { Button } from '~/components/ui/button';
 import { SubmitButton } from './ui/submitButton';
 
-
 export function Billing(user: SelectUser) {
   const trialPeriod = 1209600 * 1000 // 14 days
   const trialDaysLeft = Math.round((user.freeTrialStart!.getTime() + trialPeriod - new Date().getTime()) / (1000 * 3600 * 24))
