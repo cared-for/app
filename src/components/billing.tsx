@@ -1,71 +1,67 @@
-import { loadStripe } from '@stripe/stripe-js';
-import { env } from "~/env"
+import Link from 'next/link';
 
-import { api } from "~/trpc/server"
+import { api } from '~/trpc/server';
+import { redirect } from 'next/navigation';
 
 // components
 import type { SelectUser } from "~/server/db/schema"
-import { redirect } from 'next/navigation';
+import { Button } from '~/components/ui/button';
 import { SubmitButton } from './ui/submitButton';
 
-// Make sure to call `loadStripe` outside of a component’s render to avoid
-// recreating the `Stripe` object on every render.
-const stripePromise = loadStripe(
-  env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-);
 
 export function Billing(user: SelectUser) {
   const trialPeriod = 1209600 * 1000 // 14 days
   const trialDaysLeft = Math.round((user.freeTrialStart!.getTime() + trialPeriod - new Date().getTime()) / (1000 * 3600 * 24))
 
-  const createCheckout = async () => {
+  const createBillingPortal = async (customerId: string) => {
     'use server'
 
-    const checkout = await api.stripe.createCheckoutSession.mutate({ customerId: user.customerId })
-    redirect(checkout.url!)
+    const portal = await api.stripe.createBillingPortal.mutate({ customerId })
+    redirect(portal.url)
   }
+  const createBillingPortalWithProps = createBillingPortal.bind(null, user.customerId)
   
-  if (user.onFreeTrial) {
-    if (trialDaysLeft > 0) {
-      return ( 
-        <form className="flex items-center gap-x-2" action={createCheckout} >
-          <span className="text-lg text-[#006a4e]">
-            There are {trialDaysLeft} days left in your free trial
-          </span>
-          <SubmitButton 
-            className="text-lg text-white bg-[#006a4e] rounded-2xl hover:bg-[#00563f]"
-            type="submit"
-          >
-            Subscribe now
-          </SubmitButton>
-        </form>
-      ) 
-    } else {
-      return ( 
-        <form className="flex items-center gap-x-2" action={createCheckout} >
-          <span className="text-lg text-[#006a4e]">
-            Your free trial has ended
-          </span>
-          <SubmitButton
-            className="text-lg text-white bg-[#006a4e] rounded-2xl hover:bg-[#00563f]"
-            type="submit"
-          >
-            Subscribe now to renew
-          </SubmitButton>
-        </form>
-      ) 
-    }
-  }
+  if (user.isPaying) return (
+    <form action={createBillingPortalWithProps}>
+      <SubmitButton variant="link" className="text-[#006a4e] font-normal text-lg">
+        Billing
+      </SubmitButton>
+    </form>
+  )
 
-  return null
+  if (trialDaysLeft > 0) return (  
+    <div className="flex items-center gap-x-2" >
+      <span className="text-lg text-[#006a4e]">
+        There are {trialDaysLeft} days left in your free trial
+      </span>
+      <Button
+        className="text-lg text-white bg-[#006a4e] rounded-2xl hover:bg-[#00563f]"
+        type="submit"
+      >
+        <Link href="/pricing" className="w-full" >
+          Subscribe now
+        </Link>
+      </Button>
+    </div>
+  )
+
+  return ( 
+    <div className="flex items-center gap-x-2" >
+      <span className="text-lg text-[#006a4e]">
+        Your free trial has ended
+      </span>
+      <Button
+        className="text-lg text-white bg-[#006a4e] rounded-2xl hover:bg-[#00563f]"
+        type="submit"
+      >
+        <Link href="/pricing" className="w-full">
+          Subscribe now to renew
+        </Link>
+      </Button>
+    </div>
+  ) 
   
-  // return (
-  //   <form action={createCheckout}>
-  //     <Button className="text-lg text-[#e0f0e9] bg-[#006a4e]/90 px-4 py-1 rounded-2xl hover:bg-[#006a4e]">
-  //       Billing
-  //     </Button>
-  //   </form>
-  // )
+  return 
 }
 
 

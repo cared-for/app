@@ -7,6 +7,7 @@ export const stripeRouter = createTRPCRouter({
   createCheckoutSession: protectedProcedure
     .input(z.object({ customerId: z.string(), price: z.union([z.literal("STANDARD"), z.literal("LIFETIME")]) }))
     .mutation(async ({ input, ctx }) => {
+
       const price = input.price === "STANDARD" ? env.STRIPE_STANDARD_PRICE_ID : env.STRIPE_LIFETIME_PRICE_ID
       const mode = input.price === "STANDARD" ? "subscription" : "payment"
 
@@ -25,5 +26,13 @@ export const stripeRouter = createTRPCRouter({
         customer: input.customerId,
       });
     }),
+    createBillingPortal: protectedProcedure
+      .input(z.object({ customerId: z.string() }))
+      .mutation(async ({ input, ctx }) => {
+        return ctx.stripe.billingPortal.sessions.create({
+          customer: input.customerId,
+          return_url: `${env.HOST}/dashboard`,
+        });
+      }),
 })
 

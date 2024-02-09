@@ -38,7 +38,7 @@ export const users = createTable('users', {
   attemptCount: integer('attempt_count').default(0).notNull(),
   
   // payment info
-  onFreeTrial: boolean('on_free_trial').default(true),
+  isPaying: boolean('isPaying').default(true),
   freeTrialStart: timestamp('free_trial_start', { withTimezone: false }).defaultNow(),
   customerId: varchar('customer_id', { length: 256 }).notNull(),
 

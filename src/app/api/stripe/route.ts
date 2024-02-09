@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
       await db
         .update(users)
-        .set({ onFreeTrial: false })
+        .set({ isPaying: true })
         .where(
           eq(
             users.customerId,
@@ -36,6 +36,25 @@ export async function POST(request: NextRequest) {
         )
 
       console.log("payment successfully recorded")
+    }
+    if (event.type === 'customer.subscription.deleted') {
+      console.log("event: ", JSON.stringify(event, null, 2))
+      const subscription = event.data.object
+      const customerId = subscription.customer
+
+      if (!customerId) throw new Error('No customer ID')
+
+      await db
+        .update(users)
+        .set({ isPaying: false })
+        .where(
+          eq(
+            users.customerId,
+            customerId as string
+          )
+        )
+
+      console.log("subscription successfully deleted")
     }
   } catch (err) {
     return NextResponse.error()

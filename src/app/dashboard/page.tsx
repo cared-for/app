@@ -1,5 +1,6 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
+import Link from "next/link"
 
 import { createClient } from "~/lib/supabase/server"
 
@@ -28,7 +29,7 @@ export default async function Onboard() {
     <div className="flex flex-col min-h-screen overflow-y-auto bg-[#e0f0e9] p-6 items-center">
       <div className="flex flex-col max-w-[1050px]">
         <div className="flex flex-col lg:mb-0 lg:flex-row h-[100px] lg:h-[65px] items-baseline lg:justify-between">
-          <h1 className="text-4xl font-bold text-[#006a4e]">CaredFor</h1>
+          <Link href="/dashboard" className="text-4xl font-bold text-[#006a4e]">CaredFor</Link>
           <Billing {...user} />
         </div>
 
