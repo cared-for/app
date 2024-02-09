@@ -12,6 +12,8 @@ export async function POST(request: NextRequest) {
   const payload = await request.text()
   const sig = request.headers.get('Stripe-Signature')
 
+  return NextResponse.json({ message: "Hello World!" }, { status: 200 })
+
   if (!sig) {
     return NextResponse.error()
   }
