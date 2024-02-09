@@ -1,1 +1,0 @@
-ALTER TABLE "caredFor_users" ADD COLUMN "customer_id" varchar(256);

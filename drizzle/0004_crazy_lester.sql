@@ -1,1 +1,0 @@
-ALTER TABLE "caredFor_users" ADD COLUMN "check_in_time" time;

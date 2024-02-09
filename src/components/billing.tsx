@@ -60,8 +60,6 @@ export function Billing(user: SelectUser) {
       </Button>
     </div>
   ) 
-  
-  return 
 }
 
 

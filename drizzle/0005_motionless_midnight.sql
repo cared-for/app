@@ -1,1 +1,0 @@
-ALTER TABLE "caredFor_users" ALTER COLUMN "free_trial_start" SET DEFAULT now();

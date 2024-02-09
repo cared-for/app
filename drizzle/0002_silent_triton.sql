@@ -1,1 +1,0 @@
-ALTER TABLE "caredFor_dependents" DROP COLUMN IF EXISTS "email";
