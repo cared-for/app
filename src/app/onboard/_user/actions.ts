@@ -26,7 +26,7 @@ export const stepThreeSubmit = async (_: any, formData: FormData) => {
   })
   await api.user.update.mutate({ id: data.userId, completedUserOnboarding: true })
 
-  if (price !== "") {
+  if (price) {
     const checkoutSession = await api.stripe.createCheckoutSession.mutate({
       customerId: data.customerId,
       price: price === "standard" ? "STANDARD" : "LIFETIME",
