@@ -44,7 +44,9 @@ export function StepThree({ id, customerId }: SelectUser) {
             </h1>
 
             <p className="text-md text-[#155724] opacity-50">
-              the Care Circle will be the people who will be contacted if miss you miss a check-in 4 times in a row
+              the Care Circle will be the people who will be contacted if miss you miss a check-in 4 times in a row.<br/>
+              By inputting their contact information, you are agreeing to allow the members of your Care Circle to be contacted
+              via SMS through our toll-free phone number.
             </p>
           </div>
           

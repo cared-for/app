@@ -32,8 +32,7 @@ export default function HowItWorks() {
             <MessageCircleWarning className="h-[200px] w-[200px] lg:h-[200px] lg:w-[200px] text-[#006a4e] self-center place-self-center bg-[#F1F8F5] p-6 rounded-xl" />
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#006a4e] break-normal">No Answer!</h2>
             <p className="text-gray-500 text-md lg:text-lg">
-             If you miss your check-in 4 times in a row, the people in your care circle will be sent a text,
-             being notified of your missed check-in.
+             If you miss your check-in 4 times in a row, the people in your care circle will be notified of your missed check-in.
             </p>
           </div>
         </div>
