@@ -47,8 +47,8 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
       <api.Provider client={trpcClient} queryClient={queryClient}>
         <PostHogProvider client={posthog}>
           {props.children}
-          <PostHogPageView />
           <Suspense fallback={null} >
+            <PostHogPageView />
             <ProgressBar
               height="4px"
               color="#006a4e"
