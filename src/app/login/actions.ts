@@ -4,6 +4,7 @@ import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { eq } from 'drizzle-orm'
+import { PostHogClient } from '~/server/posthog'
 
 import { createClient } from '~/lib/supabase/actions'
 import { db } from '~/server/db'
@@ -20,7 +21,7 @@ export async function login(prevState: any, formData: FormData) {
     password: formData.get('password') as string,
   }
 
-  const { error } = await supabase.auth.signInWithPassword(data)
+  const { data: authData, error } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
     return { status: "FAIL", message: error.message }
@@ -36,6 +37,9 @@ export async function login(prevState: any, formData: FormData) {
   if (!user) {
     return { status: "FAIL", message: "User not found" }
   }
+  
+  const postHog = PostHogClient()
+  postHog.identify({ distinctId: authData.user.id })
 
   if (!user.completedUserOnboarding) {
     revalidatePath('/onboard', 'layout')

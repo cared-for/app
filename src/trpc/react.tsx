@@ -11,6 +11,7 @@ import { useState } from "react";
 
 import { type AppRouter } from "~/server/api/root";
 import { getUrl, transformer } from "./shared";
+import { PostHogPageView } from "../postHogPageView";
 import { env } from "~/env";
 
 export const api = createTRPCReact<AppRouter>();
@@ -18,6 +19,7 @@ export const api = createTRPCReact<AppRouter>();
 if (typeof window !== 'undefined') {
   posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {
     api_host: env.NEXT_PUBLIC_POSTHOG_HOST,
+    capture_pageview: false,
   })
 }
 
@@ -45,6 +47,7 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
       <api.Provider client={trpcClient} queryClient={queryClient}>
         <PostHogProvider client={posthog}>
           {props.children}
+          <PostHogPageView />
           <Suspense fallback={null} >
             <ProgressBar
               height="4px"

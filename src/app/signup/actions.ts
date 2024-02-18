@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { PostHogClient } from '~/server/posthog'
 
 import { createClient } from '~/lib/supabase/actions'
 
@@ -18,13 +19,16 @@ export async function signup(_: any, formData: FormData) {
   }
   const price = formData.get('price') as string
 
-  const { error } = await supabase.auth.signUp(data)
+  const { data: authData, error } = await supabase.auth.signUp(data)
   
   if (error) {
     return { status: "ERROR", message: error.message }
   }
 
   const redirectPath = price !== "" ? `/onboard?price=${price}` : '/onboard'
+
+  const postHog = PostHogClient()
+  postHog.identify({ distinctId: authData.user!.id })
 
   revalidatePath('/onboard', 'layout')
   redirect(redirectPath)

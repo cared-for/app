@@ -13,7 +13,7 @@ export default function GetStarted() {
           No credit card required
         </p>
       
-        <Button size="lg" className="bg-[#006a4e] text-2xl h-14 text-white hover:bg-[#00563f]" type="submit">
+        <Button id="get-started-footer" size="lg" className="bg-[#006a4e] text-2xl h-14 text-white hover:bg-[#00563f]" type="submit">
           <Link href="/signup">
             Get Started Today
           </Link>

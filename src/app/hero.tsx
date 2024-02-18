@@ -26,7 +26,7 @@ export default function Hero() {
               </p>
             */}
             </div>
-            <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center lg:justify-start">
+            <div id="get-started-hero" className="flex flex-col gap-2 min-[400px]:flex-row justify-center lg:justify-start">
               <Link
                 className="inline-flex h-12 items-center justify-center rounded-md bg-[#006a4e] px-8 text-xl font-medium text-white shadow transition-colors hover:bg-[#00563f] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00563f] disabled:pointer-events-none disabled:opacity-50"
                 href="/signup"
