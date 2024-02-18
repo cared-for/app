@@ -15,7 +15,7 @@ import { Client } from "@upstash/qstash"
 import Stripe from "stripe"
 
 import { db } from "~/server/db";
-import { PostHogClient } from "~/server/posthog";
+// import { PostHogClient } from "~/server/posthog";
 import { client as twilio } from "~/server/twilio";
 import { createClient } from "~/lib/supabase/server";
 import { env } from "~/env";
@@ -38,7 +38,7 @@ const stripe = new Stripe(env.STRIPE_SECRET_KEY)
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const supabase = createClient(cookies());
   const { data } = await supabase.auth.getUser();
-  const postHog = PostHogClient()
+  // const postHog = PostHogClient()
 
   return {
     db,
@@ -46,7 +46,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
     supabase,
     qStash,
     stripe,
-    postHog,
+    // postHog,
     user: data.user,
     ...opts,
   };

@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { eq } from 'drizzle-orm'
-import { PostHogClient } from '~/server/posthog'
+// import { PostHogClient } from '~/server/posthog'
 
 import { createClient } from '~/lib/supabase/actions'
 import { db } from '~/server/db'
@@ -38,8 +38,8 @@ export async function login(prevState: any, formData: FormData) {
     return { status: "FAIL", message: "User not found" }
   }
   
-  const postHog = PostHogClient()
-  postHog.identify({ distinctId: authData.user.id })
+  // const postHog = PostHogClient()
+  // postHog.identify({ distinctId: authData.user.id })
 
   if (!user.completedUserOnboarding) {
     revalidatePath('/onboard', 'layout')
