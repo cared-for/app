@@ -1,10 +1,8 @@
 import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
-import PlausibleProvider from 'next-plausible'
 
 import { TRPCReactProvider } from "~/trpc/react";
-import { env } from "~/env";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <PlausibleProvider domain={env.NEXT_PUBLIC_HOST} />
+        <script defer data-domain="caredfor.care" src="https://plausible.io/js/script.js"></script>
       </head>
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider>{children}</TRPCReactProvider>

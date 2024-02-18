@@ -46,7 +46,7 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <api.Provider client={trpcClient} queryClient={queryClient}>
-        <PlausibleProvider domain={env.NEXT_PUBLIC_HOST}>
+        <PlausibleProvider domain="caredfor.care">
           <PostHogProvider client={posthog}>
             {props.children}
             <Suspense fallback={null} >
