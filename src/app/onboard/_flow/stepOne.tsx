@@ -63,6 +63,7 @@ export function StepOne({ email }: { email: string }) {
     }
   }
 
+
   return (
     <div className="flex flex-col min-h-screen bg-[#e0f0e9] items-center justify-center p-4">
       <h1 className="absolute top-4 left-6 text-4xl font-bold text-[#006a4e]">CaredFor</h1>
