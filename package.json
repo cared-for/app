@@ -39,6 +39,7 @@
     "next-nprogress-bar": "^2.1.2",
     "pg": "^8.11.3",
     "postgres": "^3.4.3",
+    "posthog-js": "^1.106.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "server-only": "^0.0.1",

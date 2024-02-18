@@ -4,14 +4,16 @@ export default function Hero() {
   return (
     <section className="w-full">
       <div className="container px-4 md:px-6">
-        <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
+        <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-8 xl:grid-cols-[1fr_600px]">
           <div className="flex flex-col justify-center space-y-6">
             <div className="space-y-6">
               <h1 className="text-4xl font-bold tracking-tighter text-[#006a4e] sm:text-5xl xl:text-6xl/none">
-                Worried about your loved ones living alone? <span className="text-[#67CCA0]">Call them!</span>
+                Daily Check-ins to keep your loved ones <span className="text-[#67CCA0]">Safe & Connected</span> 
+                {/*Worried about your loved ones living alone? <span className="text-[#67CCA0]">Call them!</span>*/}
               </h1>
               <p className="max-w-[600px] text-center lg:text-left text-gray-500 text-lg md:text-xl dark:text-gray-400">
-                CaredFor is a simple check-in system that calls your loved ones once a day to ensure they are safe and connected.
+                Cared for is an auotmated check-in system that calls your loved ones once a day to ensure they are safe and connected.
+                {/*CaredFor is a simple check-in system that calls your loved ones once a day to ensure they are safe and connected.*/}
               </p>
 
             {/*
