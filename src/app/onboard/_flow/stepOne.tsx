@@ -141,6 +141,7 @@ export function StepOne({ email }: { email: string }) {
           </div>
 
           <Button
+            id="step-one-submit"
             size="lg"
             className="bg-[#006a4e] text-md text-white hover:bg-[#00563f] flex items-center gap-x-1"
             type="submit"
@@ -150,7 +151,6 @@ export function StepOne({ email }: { email: string }) {
             {status === "LOADING" && <Spinner />}
           </Button>
         </div>
-        
 
         <div className="hidden lg:block space-y-6">
           <div className="p-6 border border-[#c3e6cb] bg-white rounded-md dark:border-slate-800">

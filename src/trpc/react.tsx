@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import posthog from 'posthog-js'
+import PlausibleProvider from 'next-plausible'
 import { PostHogProvider } from 'posthog-js/react'
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 import { useState } from "react";
@@ -45,18 +46,20 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <api.Provider client={trpcClient} queryClient={queryClient}>
-        <PostHogProvider client={posthog}>
-          {props.children}
-          <Suspense fallback={null} >
-            <PostHogPageView />
-            <ProgressBar
-              height="4px"
-              color="#006a4e"
-              options={{ showSpinner: false }}
-              shallowRouting
-            />
-          </Suspense>
-        </PostHogProvider>  
+        <PlausibleProvider domain={env.NEXT_PUBLIC_HOST}>
+          <PostHogProvider client={posthog}>
+            {props.children}
+            <Suspense fallback={null} >
+              <PostHogPageView />
+              <ProgressBar
+                height="4px"
+                color="#006a4e"
+                options={{ showSpinner: false }}
+                shallowRouting
+              />
+            </Suspense>
+          </PostHogProvider>  
+        </PlausibleProvider>
       </api.Provider>
     </QueryClientProvider>
   );

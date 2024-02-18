@@ -39,6 +39,7 @@ export const env = createEnv({
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string(),
     NEXT_PUBLIC_POSTHOG_KEY: z.string(),
     NEXT_PUBLIC_POSTHOG_HOST: z.string(),
+    NEXT_PUBLIC_HOST: z.string(),
   },
 
   /**
@@ -56,6 +57,7 @@ export const env = createEnv({
     STRIPE_LIFETIME_PRICE_ID: process.env.STRIPE_LIFETIME_PRICE_ID,
     TWILIO_HOST: process.env.TWILIO_HOST,
     HOST: process.env.HOST,
+    NEXT_PUBLIC_HOST: process.env.NEXT_PUBLIC_HOST,
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
