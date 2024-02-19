@@ -20,7 +20,7 @@ export function Form() {
   const price = searchParams.get("price")
 
   return (
-    <form className="plausible-event-name=signup_submit w-full max-w-md space-y-4" action={formAction}>
+    <form className="w-full max-w-md space-y-4" action={formAction}>
       <input name="price" type="hidden" value={price ?? ""} />
       <div className="space-y-1">
         <Label htmlFor="email" className="text-base text-[#006a4e]">Email</Label>
@@ -32,7 +32,7 @@ export function Form() {
         <Input id="password" required type="password" name="password"/>
       </div>
 
-      <SubmitButton className="w-full bg-[#006a4e] text-white hover:bg-[#00563f]" type="submit">
+      <SubmitButton className="plausible-event-name=signup_submit w-full bg-[#006a4e] text-white hover:bg-[#00563f]" type="submit">
         Sign Up
       </SubmitButton>
       {state.status === "ERROR" && (

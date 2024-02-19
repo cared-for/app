@@ -68,7 +68,7 @@ export function StepOne({ email }: { email: string }) {
     <div className="flex flex-col min-h-screen bg-[#e0f0e9] items-center justify-center p-4">
       <h1 className="absolute top-4 left-6 text-4xl font-bold text-[#006a4e]">CaredFor</h1>
       
-      <form className="plausible-event-name=step_one_submit max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 p-6" onSubmit={handleSubmit} >
+      <form className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 p-6" onSubmit={handleSubmit} >
         <div className="flex flex-col min-h-[400px] space-y-6 justify-between">
           <h1 className="text-4xl font-bold text-[#155724]">
           </h1>
@@ -144,7 +144,7 @@ export function StepOne({ email }: { email: string }) {
           <Button
             id="step-one-submit"
             size="lg"
-            className="bg-[#006a4e] text-md text-white hover:bg-[#00563f] flex items-center gap-x-1"
+            className="plausible-event-name=step_one_submit bg-[#006a4e] text-md text-white hover:bg-[#00563f] flex items-center gap-x-1"
             type="submit"
             disabled={"LOADING" === status}
           >

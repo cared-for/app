@@ -15,7 +15,6 @@ import { Skeleton } from './skeleton'
 
 export default async function Onboard() {
   nostore()
-
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
 
