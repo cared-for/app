@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { unstable_noStore as nostore } from "next/cache"
 
 import { createClient } from '~/lib/supabase/server'
 
@@ -13,6 +14,7 @@ import { StepThree as DependentStepThree } from './_dependent/stepThree'
 import { Skeleton } from './skeleton'
 
 export default async function Onboard() {
+  nostore()
 
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)

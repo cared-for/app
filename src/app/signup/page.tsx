@@ -4,10 +4,12 @@
  */
 import Link from "next/link"
 import { Suspense } from "react"
+import { unstable_noStore as nostore } from "next/cache"
 import { Form } from "./form"
 import { Skeleton } from "./skeleton"
 
 export default function Signup() {
+  nostore()
   return (
     <div className="flex flex-col min-h-screen bg-[#e0f0e9]">
       <header className="flex items-center justify-between px-6 py-4">
