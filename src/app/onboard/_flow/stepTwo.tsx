@@ -7,6 +7,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { api } from "~/trpc/react"
+import { usePlausible } from "next-plausible"
 
 // components
 import { Spinner } from "~/components/ui/spinner"
@@ -16,6 +17,7 @@ import type { SelectUser } from "~/server/db/schema"
 
 export function StepTwo({ id }: SelectUser) {
   const router = useRouter()
+  const plausible = usePlausible()
   const [status, setStatus] = useState<"IDLE" | "LOADING" | "SUCCESS" | "ERROR">("IDLE")
   const updateCheckIn = api.checkIn.update.useMutation()
 
@@ -37,6 +39,8 @@ export function StepTwo({ id }: SelectUser) {
         hour: utcHour,
         minute: utcMinute,
       })
+
+      plausible("step one submit")
 
       router.refresh()
     } catch(error) {
