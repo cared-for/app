@@ -40,7 +40,7 @@ export function StepTwo({ id }: SelectUser) {
         minute: utcMinute,
       })
 
-      plausible("step one submit")
+      plausible("step two submit")
 
       router.refresh()
     } catch(error) {
