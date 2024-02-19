@@ -48,7 +48,7 @@ export function StepTwo({ id }: SelectUser) {
     <div className="flex flex-col min-h-screen bg-[#e0f0e9] items-center justify-center p-4">
       <h1 className="absolute top-4 left-6 text-4xl font-bold text-[#006a4e]">CaredFor</h1>
       
-      <form className="plausible-event-name=step+two+submit max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 p-6" onSubmit={handleSubmit} >
+      <form className="plausible-event-name=step_two_submit max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 p-6" onSubmit={handleSubmit} >
         <div className="flex flex-col space-y-6 min-h-[400px] justify-between">
 
           <div className="gap-y-2">
