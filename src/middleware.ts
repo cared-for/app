@@ -2,27 +2,12 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  console.log("does it not get in here?")
   let response = NextResponse.next({
     request: {
       headers: request.headers,
     },
   })
   
-  // PLAUSIBLE API EVENT REQUEST STUFF
-  // const userAgentData = userAgent(request)
-  // const requestedHost = request.headers.get('X-Forwarded-Host');
-  // const requestedPort = request.headers.get('X-Forwarded-Port');
-  // const requestedProto = request.headers.get('X-Forwarded-Proto');
-  //
-  // const all = Array.from(request.headers.entries())
-  // console.log("all :", all)
-  //
-  // console.log("user agent: ", userAgentData)
-  // console.log("requested host: ", requestedHost)
-  // console.log("requested port: ", requestedPort)
-  // console.log("requested proto: ", requestedProto)
-
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
