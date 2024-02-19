@@ -55,7 +55,6 @@ export default function Login() {
                 <SubmitButton className="w-full bg-[#006a4e] text-white hover:bg-[#00563f]" >
                   Login
                 </SubmitButton>
-
                 {state.status === "ERROR" && (
                   <p className="text-red-500 text-center">{state.message}</p>
                 )}

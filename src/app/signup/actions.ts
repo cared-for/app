@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 // import { PostHogClient } from '~/server/posthog'
 
@@ -29,6 +29,23 @@ export async function signup(_: any, formData: FormData) {
 
   // const postHog = PostHogClient()
   // postHog.identify({ distinctId: authData.user!.id })
+  
+  // PLAUSIBLE API EVENT REQUEST
+  // const head = headers()
+  // const res = await fetch("https://plausible.io/api/event", {
+  //   method: "GET",
+  //   headers: {
+  //     "User-Agent": head.get("user-agent"),
+  //     "X-Forwarded-For": head.get("x-forwarded-for"),
+  //     "Content-Type": "application/json",
+  //     "Authorization": `Bearer ${process.env.NEXT_PUBLIC_PLAUSIBLE_API_KEY}`,
+  //   },
+  //   body: JSON.stringify({
+  //     name: "signup submit",
+  //     domain: "caredfor.care",
+  //     url: "https://caredfor.care/signup",
+  //   }),
+  // })
 
   revalidatePath('/onboard', 'layout')
   redirect(redirectPath)

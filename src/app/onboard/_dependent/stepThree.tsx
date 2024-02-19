@@ -35,7 +35,7 @@ export function StepThree({ id, email, userId, customerId }: SelectDependents & 
     <div className="flex flex-col min-h-screen bg-[#e0f0e9] items-center justify-center p-4 lg:p-32">
       <h1 className="absolute top-4 left-6 text-4xl font-bold text-[#006a4e]">CaredFor</h1>
       
-      <form className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 p-6" action={formAction} >
+      <form className="plausible-event-name=step+three+dependent+submit max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 p-6" action={formAction} >
         <input name="dependentId" type="hidden" value={id} />
         <input name="userId" type="hidden" value={userId} />
         <input name="customerId" type="hidden" value={customerId} />
