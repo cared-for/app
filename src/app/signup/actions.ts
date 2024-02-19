@@ -1,9 +1,8 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { cookies, headers } from 'next/headers'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-// import { PostHogClient } from '~/server/posthog'
 
 import { createClient } from '~/lib/supabase/actions'
 
@@ -19,34 +18,14 @@ export async function signup(_: any, formData: FormData) {
   }
   const price = formData.get('price') as string
 
-  const { data: authData, error } = await supabase.auth.signUp(data)
+  const { error } = await supabase.auth.signUp(data)
   
   if (error) {
     return { status: "ERROR", message: error.message }
   }
 
   const redirectPath = price !== "" ? `/onboard?price=${price}` : '/onboard'
-
-  // const postHog = PostHogClient()
-  // postHog.identify({ distinctId: authData.user!.id })
   
-  // PLAUSIBLE API EVENT REQUEST
-  const head = headers()
-  await fetch("https://plausible.io/api/event", {
-    method: "POST",
-    // @ts-expect-error - TS doesn't know about the headers method
-    headers: {
-      "User-Agent": head.get("user-agent") ?? undefined,
-      "X-Forwarded-For": head.get("x-forwarded-for") ?? undefined,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name: "signup submit",
-      domain: "caredfor.care",
-      url: "https://caredfor.care/signup",
-    }),
-  })
-
   revalidatePath('/onboard', 'layout')
   redirect(redirectPath)
 }

@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation"
 import { api } from "~/trpc/server"
-import { headers } from "next/headers"
 import { revalidatePath } from "next/cache"
  
 export const stepThreeSubmit = async (_: any, formData: FormData) => {
@@ -44,23 +43,6 @@ export const stepThreeSubmit = async (_: any, formData: FormData) => {
 
     redirect(checkoutSession.url!)
   }
-
-  // PLAUSIBLE API EVENT REQUEST
-  const head = headers()
-  await fetch("https://plausible.io/api/event", {
-    method: "POST",
-    // @ts-expect-error - TS doesn't know about the headers method
-    headers: {
-      "User-Agent": head.get("user-agent") ?? undefined,
-      "X-Forwarded-For": head.get("x-forwarded-for") ?? undefined,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name: "step three dependent submit",
-      domain: "caredfor.care",
-      url: "https://caredfor.care/onboard",
-    }),
-  })
 
   revalidatePath("/dashboard")
   redirect("/dashboard")

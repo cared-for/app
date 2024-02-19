@@ -7,7 +7,6 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { api } from "~/trpc/react"
-import { usePlausible } from "next-plausible"
 
 // components
 import { Input } from "~/components/ui/input"
@@ -20,7 +19,6 @@ import { Spinner } from "~/components/ui/spinner"
 
 export function StepOne({ email }: { email: string }) {
   const router = useRouter()
-  const plausible = usePlausible()
   const [status, setStatus] = useState<"IDLE" | "LOADING" | "SUCCESS" | "ERROR">("IDLE")
   const [isUser, setIsUser] = useState<boolean>(false)
   const createUser = api.user.create.useMutation()
@@ -58,8 +56,6 @@ export function StepOne({ email }: { email: string }) {
         dependentId,
         isDependent: !isUser,
       })
-
-      plausible("step one submit")
 
       router.refresh()
     } catch(error) {

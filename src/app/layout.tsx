@@ -22,9 +22,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <script defer data-domain="caredfor.care" src="https://plausible.io/js/script.tagged-events.js"></script>
-      </head>
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
