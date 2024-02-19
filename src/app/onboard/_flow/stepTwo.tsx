@@ -84,7 +84,7 @@ export function StepTwo({ id }: SelectUser) {
           <Button
             id="step-two-submit"
             size="lg"
-            className="plausible-event-name=step_two_submit bg-[#006a4e] text-md text-white hover:bg-[#00563f] flex items-center gap-x-1"
+            className="bg-[#006a4e] text-md text-white hover:bg-[#00563f] flex items-center gap-x-1"
             type="submit"
             disabled={"LOADING" === status}
           >

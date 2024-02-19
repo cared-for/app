@@ -131,7 +131,7 @@ export function StepThree({ id, customerId }: SelectUser) {
 
             <SubmitButton
               size="lg"
-              className="plausible-event-name=step_three_main_user_submit bg-[#006a4e] text-md text-white hover:bg-[#00563f]"
+              className="bg-[#006a4e] text-md text-white hover:bg-[#00563f]"
             >
               Finish
             </SubmitButton>

@@ -32,7 +32,7 @@ export function Form() {
         <Input id="password" required type="password" name="password"/>
       </div>
 
-      <SubmitButton className="plausible-event-name=signup_submit w-full bg-[#006a4e] text-white hover:bg-[#00563f]" type="submit">
+      <SubmitButton className="w-full bg-[#006a4e] text-white hover:bg-[#00563f]" type="submit">
         Sign Up
       </SubmitButton>
       {state.status === "ERROR" && (

@@ -134,7 +134,7 @@ export function StepThree({ id, email, userId, customerId }: SelectDependents & 
 
             <SubmitButton
               size="lg"
-              className="plausible-event-name=step_three_dependent_submit bg-[#006a4e] text-md text-white hover:bg-[#00563f]"
+              className="bg-[#006a4e] text-md text-white hover:bg-[#00563f]"
             >
               Finish
             </SubmitButton>
