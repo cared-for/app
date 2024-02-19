@@ -20,7 +20,7 @@ export function Form() {
   const price = searchParams.get("price")
 
   return (
-    <form className="plausible-event-name=signup+submit w-full max-w-md space-y-4" action={formAction}>
+    <form className="plausible-event-name=signup_submit w-full max-w-md space-y-4" action={formAction}>
       <input name="price" type="hidden" value={price ?? ""} />
       <div className="space-y-1">
         <Label htmlFor="email" className="text-base text-[#006a4e]">Email</Label>
