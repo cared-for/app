@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import posthog from 'posthog-js'
+import PlausibleProvider from "next-plausible";
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 import { useState } from "react";
 
@@ -43,15 +44,17 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <api.Provider client={trpcClient} queryClient={queryClient}>
-        {props.children}
-        <Suspense fallback={null} >
-          <ProgressBar
-            height="4px"
-            color="#006a4e"
-            options={{ showSpinner: false }}
-            shallowRouting
-          />
-        </Suspense>
+        <PlausibleProvider domain="cared-for-git-demo-stanley-szetos-projects.vercel.app" >
+          {props.children}
+          <Suspense fallback={null} >
+            <ProgressBar
+              height="4px"
+              color="#006a4e"
+              options={{ showSpinner: false }}
+              shallowRouting
+            />
+          </Suspense>
+        </PlausibleProvider>
       </api.Provider>
     </QueryClientProvider>
   );

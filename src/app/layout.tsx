@@ -22,6 +22,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <script defer data-domain="cared-for-git-demo-stanley-szetos-projects.vercel.app" src="https://plausible.io/js/script.js" />
+      </head>
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
