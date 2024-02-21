@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { cookies, headers } from 'next/headers'
 import { redirect } from 'next/navigation'
-// import { PostHogClient } from '~/server/posthog'
+import { PostHogClient } from '~/server/posthog'
 
 import { createClient } from '~/lib/supabase/actions'
 
@@ -27,8 +27,8 @@ export async function signup(_: any, formData: FormData) {
 
   const redirectPath = price !== "" ? `/onboard?price=${price}` : '/onboard'
 
-  // const postHog = PostHogClient()
-  // postHog.identify({ distinctId: authData.user!.id })
+  const postHog = PostHogClient()
+  postHog.identify({ distinctId: authData.user!.id })
   
   // PLAUSIBLE API EVENT REQUEST
   const head = headers()

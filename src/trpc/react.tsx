@@ -6,13 +6,13 @@ import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import posthog from 'posthog-js'
 import PlausibleProvider from 'next-plausible'
-// import { PostHogProvider } from 'posthog-js/react'
+import { PostHogProvider } from 'posthog-js/react'
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 import { useState } from "react";
 
 import { type AppRouter } from "~/server/api/root";
 import { getUrl, transformer } from "./shared";
-// import { PostHogPageView } from "../postHogPageView";
+import { PostHogPageView } from "../postHogPageView";
 import { load as loadIntercom, boot as bootIntercom } from "~/lib/intercom";
 import { env } from "~/env";
 
@@ -53,10 +53,10 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <api.Provider client={trpcClient} queryClient={queryClient}>
         <PlausibleProvider domain="caredfor.care">
-          {/*<PostHogProvider client={posthog}>*/}
+          <PostHogProvider client={posthog}>
             {props.children}
             <Suspense fallback={null} >
-              {/*<PostHogPageView />*/}
+              <PostHogPageView />
               <ProgressBar
                 height="4px"
                 color="#006a4e"
@@ -64,7 +64,7 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
                 shallowRouting
               />
             </Suspense>
-          {/*</PostHogProvider>*/}
+          </PostHogProvider>
         </PlausibleProvider>
       </api.Provider>
     </QueryClientProvider>
