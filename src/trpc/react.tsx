@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
@@ -13,6 +13,7 @@ import { useState } from "react";
 import { type AppRouter } from "~/server/api/root";
 import { getUrl, transformer } from "./shared";
 // import { PostHogPageView } from "../postHogPageView";
+import { load as loadIntercom, boot as bootIntercom } from "~/lib/intercom";
 import { env } from "~/env";
 
 export const api = createTRPCReact<AppRouter>();
@@ -26,6 +27,11 @@ if (typeof window !== 'undefined') {
 
 export function TRPCReactProvider(props: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
+
+  if (typeof window !== "undefined") {
+    loadIntercom()
+    bootIntercom();
+  }
 
   const [trpcClient] = useState(() =>
     api.createClient({
