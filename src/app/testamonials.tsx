@@ -11,7 +11,7 @@ const testamonials1 = [
   {
     name: "Emma P.",
     image: "/testamonial-1.png",
-    message: "This service offers peace of mind to everyone involved, it's a wonderful idea and worthwhile service. Love it!!",
+    message: "it's a wonderful idea and worthwhile service. This service offers peace of mind to everyone involved, Love it!!!",
   },
   {
     name: "Bruce L.",
