@@ -77,7 +77,7 @@ const testamonials2 = [
 export default function Testamonials() {
   return (
     <section className="flex flex-col p-6" id="testimonials">
-      <div className="flex flex-col items-center container px-4 md:px-6 gap-y-16">
+      <div className="flex flex-col items-center container px-0 md:px-6 gap-y-16">
         <h2 className="text-3xl font-bold tracking-tighter text-[#006a4e] sm:text-4xl md:text-5xl lg:text-6xl/none text-center">
           Listen to what people have to say
         </h2>
