@@ -39,7 +39,7 @@ export const stepThreeSubmit = async (_: any, formData: FormData) => {
   if (price) {
     const checkoutSession = await api.stripe.createCheckoutSession.mutate({
       customerId: data.customerId,
-      price: price === "standard" ? "STANDARD" : "LIFETIME",
+      price: price === "monthly" ? "MONTHLY" : "ANNUAL",
     })
 
     redirect(checkoutSession.url!)

@@ -7,8 +7,8 @@ import { env } from "~/env"
 import { loadStripe } from '@stripe/stripe-js';
 
 // components
-import Standard from "./standard";
-import Lifetime from "./lifetime";
+import Monthtly from "./monthly";
+import Annual from "./annual";
 import { api } from "~/trpc/server";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
@@ -43,8 +43,8 @@ export default async function Pricing() {
           </h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Standard customerId={user.customerId} />
-            <Lifetime customerId={user.customerId} />
+            <Monthtly customerId={user.customerId} />
+            <Annual customerId={user.customerId} />
           </div>
         </section>
      </main>

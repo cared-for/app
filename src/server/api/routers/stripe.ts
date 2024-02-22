@@ -5,11 +5,10 @@ import { env } from "process";
 
 export const stripeRouter = createTRPCRouter({
   createCheckoutSession: protectedProcedure
-    .input(z.object({ customerId: z.string(), price: z.union([z.literal("STANDARD"), z.literal("LIFETIME")]) }))
+    .input(z.object({ customerId: z.string(), price: z.union([z.literal("MONTHLY"), z.literal("ANNUAL")]) }))
     .mutation(async ({ input, ctx }) => {
 
-      const price = input.price === "STANDARD" ? env.STRIPE_STANDARD_PRICE_ID : env.STRIPE_LIFETIME_PRICE_ID
-      const mode = input.price === "STANDARD" ? "subscription" : "payment"
+      const price = input.price === "MONTHLY" ? env.STRIPE_MONTHLY_PRICE_ID : env.STRIPE_ANNUAL_PRICE_ID
 
       return ctx.stripe.checkout.sessions.create({
         line_items: [
@@ -19,7 +18,7 @@ export const stripeRouter = createTRPCRouter({
             quantity: 1,
           },
         ],
-        mode,
+        mode: "subscription",
         success_url: `${env.HOST}/dashboard`,
         cancel_url: `${env.HOST}/dashboard`,
         // automatic_tax: {enabled: true},
