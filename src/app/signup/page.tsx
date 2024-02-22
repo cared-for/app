@@ -6,6 +6,7 @@
  */
 import { useState } from "react"
 import { useSearchParams } from "next/navigation"
+import { unstable_noStore as nostore } from "next/cache"
 
 // components
 import { Input } from "~/components/ui/input"
@@ -18,6 +19,7 @@ import { Spinner } from "~/components/ui/spinner"
 import { signup } from "./actions"
 
 export default function SignUp() {
+  nostore()
   const searchParams = useSearchParams()
   const [status, setStatus] = useState<"IDLE" | "LOADING" | "SUCCESS" | "ERROR">("IDLE")
   const [isUser, setIsUser] = useState<boolean>(false)
