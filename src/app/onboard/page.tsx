@@ -7,9 +7,9 @@ import { createClient } from '~/lib/supabase/server'
 
 import { api } from "~/trpc/server"
 
-import { StepOne } from './_flow/stepOne'
 import { StepTwo } from './_flow/stepTwo'
 import { StepThree as UserStepThree } from './_user/stepThree'
+import { StepOne as DependentStepOne } from './_dependent/stepOne'
 import { StepThree as DependentStepThree } from './_dependent/stepThree'
 import { Skeleton } from './skeleton'
 
@@ -28,8 +28,9 @@ export default async function Onboard() {
   const dependent = metadata.isDependent && metadata.dependentId 
     ? await api.dependent.get.query({ id: metadata.dependentId }) 
     : null
-
-  if (!user) return <StepOne email={data.user.email!}/>
+  
+  if (!user) redirect('/signup')
+  if (metadata.isDependent && (!user.fullName || !user.email || !user.phone)) return <DependentStepOne userId={user.id} />
   if (!user.scheduleId || !user.checkInTime) return <StepTwo {...user} />
 
   return (

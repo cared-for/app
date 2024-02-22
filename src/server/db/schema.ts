@@ -28,9 +28,9 @@ export const users = createTable('users', {
   id: serial('id').primaryKey(),
 
   // basic info
-  fullName: text('full_name').notNull(),
-  phone: varchar('phone', { length: 256 }).notNull(),
-  email: varchar('email', { length: 256 }).notNull(),
+  fullName: text('full_name'),
+  phone: varchar('phone', { length: 256 }),
+  email: varchar('email', { length: 256 }),
   
   // check-in info
   checkedIn: boolean('checked_in').default(false),

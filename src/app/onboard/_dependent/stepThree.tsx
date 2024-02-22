@@ -20,15 +20,25 @@ const initialState = {
   status: "",
   message: "",
 }
-export function StepThree({ id, email, userId, customerId }: SelectDependents & { userId: number, customerId: string }) {
+export function StepThree({ id, userId, customerId, ...mainDependent }: SelectDependents & { userId: number, customerId: string }) {
   const [state, formAction] = useFormState(stepThreeSubmit, initialState)
   const [members, setMembers] = useState<string[]>([String(id)])
   const searchParams = useSearchParams()
   const price = searchParams.get("price")
 
-  const mainDependentEmailProps = {
-    value: email!,
-    disabled: true,
+  const mainDependentProps = {
+    fullName: {
+      value: mainDependent.fullName!,
+      disabled: true,
+    },
+    phone: {
+      value: mainDependent.phone!.slice(2), // removes +1
+      disabled: true,
+    },
+    email: {
+      value: mainDependent.email!,
+      disabled: true,
+    },
   }
 
   return (
@@ -83,6 +93,7 @@ export function StepThree({ id, email, userId, customerId }: SelectDependents & 
                     name={`fullName-${i}`}
                     placeholder="John Doe"
                     required
+                    {...(i === 0 ? mainDependentProps.fullName : {})}
                   />
                 </div>
 
@@ -95,7 +106,7 @@ export function StepThree({ id, email, userId, customerId }: SelectDependents & 
                     id={`email-${i}`}
                     name={`email-${i}`}
                     required
-                    {...(i === 0 ? mainDependentEmailProps : {})}
+                    {...(i === 0 ? mainDependentProps.email : {})}
                   />
                 </div>
                 
@@ -114,8 +125,9 @@ export function StepThree({ id, email, userId, customerId }: SelectDependents & 
                       id={`phone-${i}`}
                       name={`phone-${i}`}
                       maxLength={10}
-                      required
                       placeholder="Phone number"
+                      required
+                      {...(i === 0 ? mainDependentProps.phone : {})}
                     />
                   </div>
                 </div>
