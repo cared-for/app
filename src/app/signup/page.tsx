@@ -7,62 +7,38 @@
 import { useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { unstable_noStore as nostore } from "next/cache"
+import { useFormState } from "react-dom"
+import Link from "next/link"
 
 // components
 import { Input } from "~/components/ui/input"
-import { Checkbox } from "~/components/ui/checkbox"
-import { Button } from "~/components/ui/button"
+import { Label } from "~/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group"
 
 // misc
-import { Label } from "@radix-ui/react-label"
-import { Spinner } from "~/components/ui/spinner"
 import { signup } from "./actions"
+import { SubmitButton } from "~/components/ui/submitButton"
 
+const initialState = {
+  status: "",
+  message: "",
+}
 export default function SignUp() {
   nostore()
   const searchParams = useSearchParams()
-  const [status, setStatus] = useState<"IDLE" | "LOADING" | "SUCCESS" | "ERROR">("IDLE")
-  const [isUser, setIsUser] = useState<boolean>(false)
   const [password, setPassword] = useState<string>("")
   const [passwordConfirm, setPasswordConfirm] = useState<string>("")
-  const [errorMessage, setErrorMessage] = useState<string>("")
+  const [state, formAction] = useFormState(signup, initialState)
 
   const price = searchParams.get("price")
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    try {
-      e.preventDefault()
-      
-      setStatus("LOADING");
-      const form = e.target as HTMLFormElement
-      const formData = new FormData(form)
-      const data = {
-        fullName: formData.get('fullName') as string,
-        phone: `+1${formData.get('phone') as string}`,
-        email: formData.get('email') as string,
-      }
-      await signup({ 
-        ...data,
-        password,
-        isUser,
-        price,
-      })
-
-    } catch(error: any) {
-      setErrorMessage(error?.message || "An error occurred")
-      setStatus("ERROR")
-    }
-  }
-
   return (
     <div className="flex flex-col min-h-screen bg-[#e0f0e9] items-center justify-center p-4">
-      <h1 className="absolute top-4 left-6 text-4xl font-bold text-[#006a4e]">CaredFor</h1>
+      <Link href="/" className="absolute top-4 left-6 text-4xl font-bold text-[#006a4e]">CaredFor</Link>
       
-      <form className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 p-6" onSubmit={handleSubmit} >
+      <form className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 p-6" action={formAction} >
+        <input type="hidden" name="price" value={price ?? ""} />
         <div className="flex flex-col min-h-[400px] space-y-6 justify-between">
-          <h1 className="text-4xl font-bold text-[#155724]">
-          </h1>
-
           <div className="gap-y-2">
             <h1 className="text-4xl font-bold text-[#155724]">
               Welcome, let's start with some basic information
@@ -74,16 +50,21 @@ export default function SignUp() {
           </div>
           
           <div className="flex flex-col space-y-4">
-            <div className="flex items-center space-x-3">
-              <Checkbox 
-                id="isUser"
-                name="isUser"
-                onClick={() => setIsUser(prev => !prev)}
-                className="data-[state=checked]:bg-[#006a4e] data-[state=checked]:text-[#e0f0e9] border-[#006a4e] ring-[#006a4e]"
-              />
-              <Label htmlFor="isUser" className="text-base text-[#006a4e]">
-                Will you be the one recieving the check-in calls?
+            <div className="flex flex-col space-y-3">
+              <Label className="text-base text-[#006a4e]">
+                I will be the one who will:
               </Label>
+
+              <RadioGroup name="isUser" defaultValue="true">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem className="text-[#155724] border-[#155724] min-h-5 min-w-5" value="true" id="isUser" />
+                  <Label className="text-[#155724]" htmlFor="isUser">be receiving the check-in calls</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem className="text-[#155724] border-[#155724] min-h-5 min-w-5" value="false" id="isDependent" />
+                  <Label className="text-[#155724]" htmlFor="isDependent">be notified if my loved one has missed too many check-in calls</Label>
+                </div>
+              </RadioGroup>
             </div>
  
             <div className="flex flex-col gap-y-1">
@@ -119,7 +100,6 @@ export default function SignUp() {
                 Email
               </label>
               <Input
-                // className={`border border-[#c3e6cb] ${isUser ? 'bg-gray-100 opacity-50' : 'bg-white'}`}
                 className={`border border-[#c3e6cb] bg-white`}
                 id="email"
                 placeholder="john.doe@example.com"
@@ -158,18 +138,16 @@ export default function SignUp() {
             </div>
           </div>
 
-          <Button
+          <SubmitButton
             id="step-one-submit"
             size="lg"
             className="bg-[#006a4e] text-md text-white hover:bg-[#00563f] flex items-center gap-x-1"
-            type="submit"
-            disabled={password !== passwordConfirm || "LOADING" === status}
+            disabled={password !== passwordConfirm}
           >
-            {status === "SUCCESS" ? "Success!" : "Continue"}
-            {status === "LOADING" && <Spinner />}
-          </Button>
-          {status === "ERROR" && errorMessage && (
-            <p className="text-red-500 text-center">{errorMessage}</p>
+            Continue
+          </SubmitButton>
+          {state.status === "ERROR" && (
+            <p className="text-red-500 text-center">{state.message}</p>
           )}
         </div>
 

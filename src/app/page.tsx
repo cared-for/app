@@ -26,7 +26,7 @@ export default function Home() {
       <footer className="flex flex-col gap-y-4 lg:flex-row lg:justify-between bg-[#006a4e] text-white px-20 py-3">
         <p className="text-sm">
           CaredFor<br/>
-          {/*Address: 135 Bloor St E, Toronto, ON, Canada<br/>*/}
+          Address: 135 Bloor St E, Toronto, ON, Canada<br/>
           Email: caredforinfo@gmail.com
         </p>
 

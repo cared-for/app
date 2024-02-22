@@ -37,6 +37,7 @@ export default function TermsOfService() {
           <ul className="list-disc pl-5">
             <li>The Service is intended for personal, non-commercial use.</li>
             <li>You agree not to misuse the Service or help anyone else to do so.</li>
+            <li>You agree to only use this service in North America.</li>
           </ul>
         </section>
 
