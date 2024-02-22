@@ -28,8 +28,9 @@ export default async function Onboard() {
   const dependent = metadata.isDependent && metadata.dependentId 
     ? await api.dependent.get.query({ id: metadata.dependentId }) 
     : null
-  
+     
   if (!user) redirect('/signup')
+  if (user.completedUserOnboarding) redirect('/dashboard')
   if (metadata.isDependent && (!user.fullName || !user.email || !user.phone)) return <DependentStepOne userId={user.id} />
   if (!user.scheduleId || !user.checkInTime) return <StepTwo {...user} />
 

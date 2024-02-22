@@ -2,10 +2,21 @@
 
 import { cookies, headers } from 'next/headers'
 import { PostHogClient } from '~/server/posthog'
+import { api } from '~/trpc/server'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 import { createClient } from '~/lib/supabase/actions'
 
-export async function signup(data: { email: string, password: string }) {
+type SignupProps = {
+  fullName: string;
+  phone: string;
+  email: string;
+  password: string;
+  isUser: boolean;
+  price: string | null;
+}
+export async function signup(data: SignupProps) {
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
 
@@ -17,6 +28,25 @@ export async function signup(data: { email: string, password: string }) {
 
   const postHog = PostHogClient()
   postHog.identify({ distinctId: authData.user!.id })
+
+  let dependentId: number | undefined;
+  const newUser = await api.user.create.mutate({
+    ...(data.isUser ? data : {}),
+    authEmail: data.email,
+  })
+  if (!data.isUser) {
+    const newDependent = await api.dependent.create.mutate({
+      ...data,
+      userId: newUser!.id,
+    })
+    dependentId = newDependent!.id
+  }
+ 
+  await api.user.updateAuth.mutate({
+    userId: newUser!.id,
+    dependentId,
+    isDependent: !data.isUser,
+  })
   
   // PLAUSIBLE API EVENT REQUEST
   const head = headers()
@@ -34,4 +64,9 @@ export async function signup(data: { email: string, password: string }) {
       url: "https://caredfor.care/signup",
     }),
   })
+
+  const onboardUrl = data.price ? `/onboard?price=${data.price}` : "/onboard"
+
+  revalidatePath("onboard")
+  redirect(onboardUrl)
 }

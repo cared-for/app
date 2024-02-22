@@ -5,9 +5,7 @@
  * @see https://v0.dev/t/tXmzhc69LEs
  */
 import { useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
-import { api } from "~/trpc/react"
-import { usePlausible } from "next-plausible"
+import { useSearchParams } from "next/navigation"
 
 // components
 import { Input } from "~/components/ui/input"
@@ -17,18 +15,15 @@ import { Button } from "~/components/ui/button"
 // misc
 import { Label } from "@radix-ui/react-label"
 import { Spinner } from "~/components/ui/spinner"
+import { signup } from "./actions"
 
-export function SignUp({ email }: { email: string }) {
-  const router = useRouter()
+export default function SignUp() {
   const searchParams = useSearchParams()
-  const plausible = usePlausible()
   const [status, setStatus] = useState<"IDLE" | "LOADING" | "SUCCESS" | "ERROR">("IDLE")
   const [isUser, setIsUser] = useState<boolean>(false)
   const [password, setPassword] = useState<string>("")
   const [passwordConfirm, setPasswordConfirm] = useState<string>("")
-  const createUser = api.user.create.useMutation()
-  const createDependent = api.dependent.create.useMutation()
-  const updateUserAuth = api.user.updateAuth.useMutation()
+  const [errorMessage, setErrorMessage] = useState<string>("")
 
   const price = searchParams.get("price")
 
@@ -44,32 +39,15 @@ export function SignUp({ email }: { email: string }) {
         phone: `+1${formData.get('phone') as string}`,
         email: formData.get('email') as string,
       }
-
-      let dependentId: number | undefined;
-      const newUser = await createUser.mutateAsync({
-        ...(isUser ? data : {}),
-        authEmail: email,
-      })
-      if (!isUser) {
-        const newDependent = await createDependent.mutateAsync({
-          ...data,
-          userId: newUser!.id,
-        })
-        dependentId = newDependent!.id
-      }
-     
-      await updateUserAuth.mutateAsync({
-        userId: newUser!.id,
-        dependentId,
-        isDependent: !isUser,
+      await signup({ 
+        ...data,
+        password,
+        isUser,
+        price,
       })
 
-      plausible("signup submit")
-
-      const onboardUrl = price ? `/onboard?price=${price}` : "/onboard"
-
-      router.push(onboardUrl)
-    } catch(error) {
+    } catch(error: any) {
+      setErrorMessage(error?.message || "An error occurred")
       setStatus("ERROR")
     }
   }
@@ -158,6 +136,7 @@ export function SignUp({ email }: { email: string }) {
                 id="password"
                 name="password"
                 type="password"
+                required
               />
             </div>
 
@@ -171,6 +150,7 @@ export function SignUp({ email }: { email: string }) {
                 id="password-confirm"
                 name="password-confirm"
                 type="password"
+                required
               />
               {passwordConfirm && password !== passwordConfirm && <p className="text-red-500 text-sm">passwords do not match</p>}
             </div>
@@ -186,12 +166,15 @@ export function SignUp({ email }: { email: string }) {
             {status === "SUCCESS" ? "Success!" : "Continue"}
             {status === "LOADING" && <Spinner />}
           </Button>
+          {status === "ERROR" && errorMessage && (
+            <p className="text-red-500 text-center">{errorMessage}</p>
+          )}
         </div>
 
         <div className="hidden lg:block space-y-6">
           <div className="p-6 border border-[#c3e6cb] bg-white rounded-md dark:border-slate-800">
             <p className="text-lg text-[#155724]">
-              CaredFor originated when a friend of mine was telling me when he was having lunch
+              A friend of mine was telling me about this one time, when he was having lunch
               with his family, he was concerned about his grandma who was living alone.
 
               <br/><br/>
@@ -206,7 +189,7 @@ export function SignUp({ email }: { email: string }) {
               <br/><br/>
 
               The more I thought about it, the more I came to realize that there should be a
-              solution for this. Which is why I created CaredFor.
+              solution for this. Which became a source of inspiration for me to create CaredFor.
             </p>
           </div>
         </div>

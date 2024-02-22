@@ -61,8 +61,8 @@ export function StepTwo({ id }: SelectUser) {
             </h1>
 
             <p className="text-md text-[#155724] opacity-50">
-              A phone call will be made to your phone at the check-in time you
-              have set. If a check-in is missed, another call will be made again
+              A phone call will be made at the check-in time set here.
+              If a check-in is missed, another call will be made again
               in 15 minutes
             </p>
           </div>

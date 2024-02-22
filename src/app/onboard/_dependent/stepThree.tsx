@@ -28,12 +28,10 @@ export function StepThree({ id, userId, customerId, ...mainDependent }: SelectDe
 
   const mainDependentProps = {
     fullName: {
-      value: mainDependent.fullName!,
-      disabled: true,
+      defaultValue: mainDependent.fullName!,
     },
     phone: {
-      value: mainDependent.phone!.slice(2), // removes +1
-      disabled: true,
+      defaultValue: mainDependent.phone!.slice(2), // removes +1
     },
     email: {
       value: mainDependent.email!,
@@ -59,7 +57,7 @@ export function StepThree({ id, userId, customerId, ...mainDependent }: SelectDe
             </h1>
 
             <p className="text-md text-[#155724] opacity-50">
-              the Care Circle will be the people who will be contacted if miss you miss a check-in 4 times in a row
+              the Care Circle will be the people who will be contacted if a check-in is missed 4 times in a row
             </p>
           </div>
           
@@ -132,7 +130,7 @@ export function StepThree({ id, userId, customerId, ...mainDependent }: SelectDe
                   </div>
                 </div>
                 
-                {i === members.length - 1 && (
+                {i === members.length - 1 && members.length !== 8 && (
                   <Button
                     className="bg-[#006a4e] self-start text-white hover:bg-[#00563f]"
                     type="button"
