@@ -8,11 +8,11 @@ export default function Hero() {
           <div className="flex flex-col justify-center space-y-6">
             <div className="space-y-6">
               <h1 className="text-4xl font-bold tracking-tighter text-center text-[#006a4e] lg:text-left xl:text-6xl/none">
-                {/*Daily Check-ins to keep your loved ones <span className="text-[#67CCA0]">Safe & Connected</span> */}
-                Worried about your loved ones living alone? <span className="text-[#67CCA0]">Call them!</span>
+                Daily Check-ins to keep your loved ones <span className="text-[#67CCA0]">Safe & Connected</span>
+                {/*Worried about your loved ones living alone? <span className="text-[#67CCA0]">Call them!</span>*/}
               </h1>
               <p className="max-w-[600px] text-center lg:text-left text-gray-500 text-lg md:text-xl dark:text-gray-400">
-                CaredFor is a simple check-in system that calls your loved ones once a day to ensure they are safe and connected.
+                CaredFor is a daily check-in system that calls your loved ones once a day to ensure they are safe and connected.
               </p>
 
             {/*
