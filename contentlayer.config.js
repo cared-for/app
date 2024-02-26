@@ -59,6 +59,7 @@ export default makeSource({
         rehypePrettyCode,
         {
           theme: "github-dark",
+          //@ts-ignore
           onVisitLine(node) {
             // Prevent lines from collapsing in `display: grid` mode, and allow empty
             // lines to be copy/pasted
@@ -66,9 +67,11 @@ export default makeSource({
               node.children = [{ type: "text", value: " " }]
             }
           },
+          //@ts-ignore
           onVisitHighlightedLine(node) {
             node.properties.className.push("line--highlighted")
           },
+          //@ts-ignore
           onVisitHighlightedWord(node) {
             node.properties.className = ["word--highlighted"]
           },
