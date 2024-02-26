@@ -31,6 +31,9 @@ export default function Home() {
         </p>
 
         <div className="flex flex-col lg:items-end text-sm">
+          <Link href="/blog" >
+            Blog
+          </Link>
           <Link href="/privacy" >
             Privacy Policy
           </Link>
